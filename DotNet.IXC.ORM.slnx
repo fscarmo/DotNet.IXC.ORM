@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DotNet.IXC.ORM.Test/DotNet.IXC.ORM.Test.csproj" />
+  <Project Path="DotNet.IXC.ORM/DotNet.IXC.ORM.csproj" />
+</Solution>
