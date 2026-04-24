@@ -29,13 +29,7 @@ public class IxcOrm(string table) : RequestEmitter(table)
 
     public IxcOrm WithPagination(int page, int rows)
     {
-        return WithPagination(new Pagination(page, rows));
-    }
-
-
-    public IxcOrm WithPagination(Pagination pagination)
-    {
-        this.pagination = pagination;
+        this.pagination = new Pagination(page, rows);
         return this;
     }
 
@@ -125,6 +119,16 @@ public class IxcOrm(string table) : RequestEmitter(table)
         parameters.Add(parameterBuilder.Build());
         parameterBuilder = Parameter.NewBuilder(Table);
         SetupQuery(GetQueryAsJsonString());
+    }
+
+
+    protected override async Task<HttpContent> EmmitRequest(HttpMethod method)
+    {
+        var result = await base.EmmitRequest(method);
+        parameterBuilder = Parameter.NewBuilder(Table);
+        parameters.Clear();
+        SetupQuery(string.Empty);
+        return result;
     }
 
 
