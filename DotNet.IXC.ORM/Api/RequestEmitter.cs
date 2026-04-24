@@ -67,7 +67,6 @@ public class RequestEmitter : IDisposable
     {
         headers.Clear();
         httpClient.Dispose();
-        url = string.Empty;
     }
 
 
