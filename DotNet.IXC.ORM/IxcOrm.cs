@@ -11,8 +11,34 @@ public class IxcOrm(string table) : RequestEmitter(table)
     private readonly List<Parameter> parameters = [];
 
 
-    private Parameter.Builder parameterBuilder = Parameter.NewBuilder(table);
     private Ordering ordering = Ordering.AscBy(table, "id");
+    private Pagination pagination = Pagination.Default;
+    private Parameter.Builder parameterBuilder = Parameter.NewBuilder(table);
+
+
+    public IxcOrm WithPagination(int page, int rows)
+    {
+        return WithPagination(new Pagination(page, rows));
+    }
+
+
+    public IxcOrm WithPagination(Pagination pagination)
+    {
+        this.pagination = pagination;
+        return this;
+    }
+
+
+    public IxcOrm OrderBy(string sortName, IxcOrmSort sortOrder)
+    {
+        ordering = (sortOrder == IxcOrmSort.Desc)
+            ? Ordering.DescBy(Table, sortName)
+            : Ordering.AscBy(Table, sortName);
+
+        SetupQuery(GetQueryAsJsonString());
+
+        return this;
+    }
 
 
     public IxcOrm Where(string column)
@@ -36,27 +62,26 @@ public class IxcOrm(string table) : RequestEmitter(table)
     }
 
 
-    public IxcOrm OrderBy(string sortName, IxcOrmSort sortOrder)
+    public bool ValidateQuery(string expected)
     {
-        ordering = (sortOrder == IxcOrmSort.Desc)
-            ? Ordering.DescBy(Table, sortName)
-            : Ordering.AscBy(Table, sortName);
-
-        SetupQuery(GetQueryAsJsonString());
-
-        return this;
+        string normalizedExpected = expected
+            .Replace("\r", "")
+            .Replace("\n", "")
+            .Replace(" ", "");
+        string actual = GetQueryAsJsonString();
+        return normalizedExpected.Equals(actual);
     }
 
 
-    public string GetQueryAsJsonString()
+    private string GetQueryAsJsonString()
     {
         string queryPropsAsJson = (
             $"""
             "qtype":"{Table}",
             "query":"",
             "oper":"",
-            "page":"1",
-            "rp":"20",
+            "page":"{pagination.Page}",
+            "rp":"{pagination.Rows}",
             "sortname":"{ordering.SortName}",
             "sortorder":"{ordering.SortOrder.Value()}"
             """
