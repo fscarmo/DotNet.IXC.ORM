@@ -78,4 +78,30 @@ public class QueryBuildOperatorsTest
 
         Assert.True(ixcOrm.ValidateQuery(expected));
     }
+
+
+    [Fact]
+    public void QueryWithLessThanOperator()
+    {
+        Utils.BuildHost();
+
+        var ixcOrm = new IxcOrm("test_table")
+            .Where("age")
+            .LessThan(30);
+
+        string expected = """
+        {
+            "qtype":"test_table",
+            "query":"",
+            "oper":"",
+            "page":"1",
+            "rp":"20",
+            "sortname":"test_table.id",
+            "sortorder":"asc",
+            "grid_param":"[{\"TB\":\"test_table.age\",\"OP\":\"<\",\"P\":\"30\"}]"
+        }
+        """;
+
+        Assert.True(ixcOrm.ValidateQuery(expected));
+    }
 }
