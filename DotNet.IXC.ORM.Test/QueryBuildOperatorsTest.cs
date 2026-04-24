@@ -104,4 +104,30 @@ public class QueryBuildOperatorsTest
 
         Assert.True(ixcOrm.ValidateQuery(expected));
     }
+
+
+    [Fact]
+    public void QueryWithGreaterThanOperator()
+    {
+        Utils.BuildHost();
+
+        var ixcOrm = new IxcOrm("test_table")
+            .Where("age")
+            .GreaterThan(18);
+
+        string expected = """
+        {
+            "qtype":"test_table",
+            "query":"",
+            "oper":"",
+            "page":"1",
+            "rp":"20",
+            "sortname":"test_table.id",
+            "sortorder":"asc",
+            "grid_param":"[{\"TB\":\"test_table.age\",\"OP\":\">\",\"P\":\"18\"}]"
+        }
+        """;
+
+        Assert.True(ixcOrm.ValidateQuery(expected));
+    }
 }
