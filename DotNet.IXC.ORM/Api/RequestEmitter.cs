@@ -92,7 +92,7 @@ public class RequestEmitter : IDisposable
     }
 
 
-    protected async Task<HttpContent> EmmitRequest(HttpMethod method)
+    protected virtual async Task<HttpContent> EmmitRequest(HttpMethod method)
     {
         HttpResponseMessage? response = null;
 
