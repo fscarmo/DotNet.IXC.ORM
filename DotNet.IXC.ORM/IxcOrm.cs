@@ -1,4 +1,5 @@
 ﻿using DotNet.IXC.ORM.Api;
+using DotNet.IXC.ORM.Api.Records;
 using DotNet.IXC.ORM.Enums;
 
 
@@ -11,6 +12,7 @@ public class IxcOrm(string table) : RequestEmitter(table)
 
 
     private Parameter.Builder parameterBuilder = Parameter.NewBuilder(table);
+    private Ordering ordering = Ordering.AscBy(table, "id");
 
 
     public IxcOrm Where(string column)
@@ -28,37 +30,43 @@ public class IxcOrm(string table) : RequestEmitter(table)
         parameters.Add(parameterBuilder.Build());
         parameterBuilder = Parameter.NewBuilder(Table);
 
-        SetupQuery(GetQueryAsJson());
+        SetupQuery(GetQueryAsJsonString());
 
         return this;
     }
 
 
-    public String GetQueryAsJson()
+    public IxcOrm OrderBy(string sortName, IxcOrmSort sortOrder)
     {
-        String jsonQueryProps = GetQueryPropsAsJsonString();
-        String jsonGridParams = GetGridParamsAsJson();
-        return $"{{{jsonQueryProps},{jsonGridParams}}}";
+        ordering = (sortOrder == IxcOrmSort.Desc)
+            ? Ordering.DescBy(Table, sortName)
+            : Ordering.AscBy(Table, sortName);
+
+        SetupQuery(GetQueryAsJsonString());
+
+        return this;
     }
 
 
-    private string GetQueryPropsAsJsonString()
+    public string GetQueryAsJsonString()
     {
-        return $"""
-        "qtype":"{Table}",
-        "query":"",
-        "oper":"",
-        "page":"1",
-        "rp":"20",
-        "sortname":"{Table}.id",
-        "sortorder":"asc"
-        """;
-    }
+        string queryPropsAsJson = (
+            $"""
+            "qtype":"{Table}",
+            "query":"",
+            "oper":"",
+            "page":"1",
+            "rp":"20",
+            "sortname":"{ordering.SortName}",
+            "sortorder":"{ordering.SortOrder.Value()}"
+            """
+        ).Replace("\r", "")
+         .Replace("\n", "")
+         .Replace(" ", "");
 
+        string gridParamsContent = string.Join(",", parameters.Select(param => param.ToString()));
+        string gridParamAsJson = $"\"grid_param\":\"[{gridParamsContent}]\"";
 
-    private string GetGridParamsAsJson()
-    {
-        var content = string.Join(",", parameters.Select(param => param.ToString()));
-        return $"\"grid_param\":\"[{content}]\"";
+        return $"{{{queryPropsAsJson},{gridParamAsJson}}}";
     }
 }
