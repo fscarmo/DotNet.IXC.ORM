@@ -1,0 +1,81 @@
+﻿namespace DotNet.IXC.ORM.Test;
+
+
+public class QueryBuildOperatorsTest
+{
+    [Fact]
+    public void QueryWithLikeOperator()
+    {
+        Utils.BuildHost();
+
+        var ixcOrm = new IxcOrm("test_table")
+            .Where("name")
+            .Like("John");
+
+        string expected = """
+        {
+            "qtype":"test_table",
+            "query":"",
+            "oper":"",
+            "page":"1",
+            "rp":"20",
+            "sortname":"test_table.id",
+            "sortorder":"asc",
+            "grid_param":"[{\"TB\":\"test_table.name\",\"OP\":\"L\",\"P\":\"John\"}]"
+        }
+        """;
+
+        Assert.True(ixcOrm.ValidateQuery(expected));
+    }
+
+
+    [Fact]
+    public void QueryWithExactlyOperator()
+    {
+        Utils.BuildHost();
+        var ixcOrm = new IxcOrm("test_table")
+            .Where("name")
+            .Exactly("John");
+
+        string expected = """
+        {
+            "qtype":"test_table",
+            "query":"",
+            "oper":"",
+            "page":"1",
+            "rp":"20",
+            "sortname":"test_table.id",
+            "sortorder":"asc",
+            "grid_param":"[{\"TB\":\"test_table.name\",\"OP\":\"=\",\"P\":\"John\"}]"
+        }
+        """;
+
+        Assert.True(ixcOrm.ValidateQuery(expected));
+    }
+
+
+    [Fact]
+    public void QueryWithNotOperator()
+    {
+        Utils.BuildHost();
+
+        var ixcOrm = new IxcOrm("test_table")
+            .Where("name")
+            .Not("John");
+
+        string expected = """
+        {
+            "qtype":"test_table",
+            "query":"",
+            "oper":"",
+            "page":"1",
+            "rp":"20",
+            "sortname":"test_table.id",
+            "sortorder":"asc",
+            "grid_param":"[{\"TB\":\"test_table.name\",\"OP\":\"!=\",\"P\":\"John\"}]"
+        }
+        """;
+
+        Assert.True(ixcOrm.ValidateQuery(expected));
+    }
+}

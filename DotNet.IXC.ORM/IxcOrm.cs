@@ -16,6 +16,17 @@ public class IxcOrm(string table) : RequestEmitter(table)
     private Parameter.Builder parameterBuilder = Parameter.NewBuilder(table);
 
 
+    public bool ValidateQuery(string expected)
+    {
+        string normalizedExpected = expected
+            .Replace("\r", "")
+            .Replace("\n", "")
+            .Replace(" ", "");
+        string actual = GetQueryAsJsonString();
+        return normalizedExpected.Equals(actual);
+    }
+
+
     public IxcOrm WithPagination(int page, int rows)
     {
         return WithPagination(new Pagination(page, rows));
@@ -34,9 +45,7 @@ public class IxcOrm(string table) : RequestEmitter(table)
         ordering = (sortOrder == IxcOrmSort.Desc)
             ? Ordering.DescBy(Table, sortName)
             : Ordering.AscBy(Table, sortName);
-
         SetupQuery(GetQueryAsJsonString());
-
         return this;
     }
 
@@ -52,24 +61,70 @@ public class IxcOrm(string table) : RequestEmitter(table)
     {
         parameterBuilder.WithOperator(IxcOrmOperator.Like);
         parameterBuilder.WithValue(value);
-
-        parameters.Add(parameterBuilder.Build());
-        parameterBuilder = Parameter.NewBuilder(Table);
-
-        SetupQuery(GetQueryAsJsonString());
-
+        PrepareQuery();
         return this;
     }
 
 
-    public bool ValidateQuery(string expected)
+    public IxcOrm Exactly(object value)
     {
-        string normalizedExpected = expected
-            .Replace("\r", "")
-            .Replace("\n", "")
-            .Replace(" ", "");
-        string actual = GetQueryAsJsonString();
-        return normalizedExpected.Equals(actual);
+        parameterBuilder.WithOperator(IxcOrmOperator.Equals);
+        parameterBuilder.WithValue(value);
+        PrepareQuery();
+        return this;
+    }
+
+
+    public IxcOrm Not(object value)
+    {
+        parameterBuilder.WithOperator(IxcOrmOperator.Not);
+        parameterBuilder.WithValue(value);
+        PrepareQuery();
+        return this;
+    }
+
+
+    public IxcOrm LessThan(object value)
+    {
+        parameterBuilder.WithOperator(IxcOrmOperator.LessThan);
+        parameterBuilder.WithValue(value);
+        PrepareQuery();
+        return this;
+    }
+
+
+    public IxcOrm LessThanOrEqual(object value)
+    {
+        parameterBuilder.WithOperator(IxcOrmOperator.LessThanEquals);
+        parameterBuilder.WithValue(value);
+        PrepareQuery();
+        return this;
+    }
+
+
+    public IxcOrm GreaterThan(object value)
+    {
+        parameterBuilder.WithOperator(IxcOrmOperator.GreaterThan);
+        parameterBuilder.WithValue(value);
+        PrepareQuery();
+        return this;
+    }
+
+
+    public IxcOrm GreaterThanOrEqual(object value)
+    {
+        parameterBuilder.WithOperator(IxcOrmOperator.GreaterThanEquals);
+        parameterBuilder.WithValue(value);
+        PrepareQuery();
+        return this;
+    }
+
+
+    private void PrepareQuery()
+    {
+        parameters.Add(parameterBuilder.Build());
+        parameterBuilder = Parameter.NewBuilder(Table);
+        SetupQuery(GetQueryAsJsonString());
     }
 
 
