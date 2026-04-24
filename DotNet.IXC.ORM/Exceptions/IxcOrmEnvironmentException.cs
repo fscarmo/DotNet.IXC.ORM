@@ -2,6 +2,6 @@
 
 
 public class IxcOrmEnvironmentException(string environment)
-    : IxcOrmExeption($"A variável \"{environment}\" não foi encontrada.")
+    : IxcOrmException($"A variável \"{environment}\" não foi encontrada.")
 {
 }

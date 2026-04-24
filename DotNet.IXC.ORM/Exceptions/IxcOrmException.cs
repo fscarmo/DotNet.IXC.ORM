@@ -1,6 +1,6 @@
-﻿namespace DotNet.IXC.ORM.Exceptions
+﻿namespace DotNet.IXC.ORM.Exceptions;
+
+
+public abstract class IxcOrmException(string message) : Exception(message)
 {
-    public abstract class IxcOrmExeption(string message) : Exception(message)
-    {
-    }
 }
