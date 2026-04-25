@@ -5,7 +5,7 @@ public class QueryBuildOperatorsTest
 {
     public QueryBuildOperatorsTest()
     {
-        Utils.BuildHost();
+        Utils.MockedHostBuilder().Build();
     }
 
 

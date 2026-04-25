@@ -22,7 +22,9 @@ public class IxcOrm(string table) : RequestEmitter(table)
             .Replace("\r", "")
             .Replace("\n", "")
             .Replace(" ", "");
+
         string actual = GetQueryAsJsonString();
+
         return normalizedExpected.Equals(actual);
     }
 
@@ -39,7 +41,9 @@ public class IxcOrm(string table) : RequestEmitter(table)
         ordering = (sortOrder == IxcOrmSort.Desc)
             ? Ordering.DescBy(Table, sortName)
             : Ordering.AscBy(Table, sortName);
+
         SetupQuery(GetQueryAsJsonString());
+
         return this;
     }
 
@@ -53,63 +57,84 @@ public class IxcOrm(string table) : RequestEmitter(table)
 
     public IxcOrm Like(object value)
     {
-        parameterBuilder.WithOperator(IxcOrmOperator.Like);
-        parameterBuilder.WithValue(value);
+        parameterBuilder
+            .WithOperator(IxcOrmOperator.Like)
+            .WithValue(value);
+
         PrepareQuery();
+
         return this;
     }
 
 
     public IxcOrm Exactly(object value)
     {
-        parameterBuilder.WithOperator(IxcOrmOperator.Equals);
-        parameterBuilder.WithValue(value);
+        parameterBuilder
+            .WithOperator(IxcOrmOperator.Equals)
+            .WithValue(value);
+
         PrepareQuery();
+
         return this;
     }
 
 
     public IxcOrm Not(object value)
     {
-        parameterBuilder.WithOperator(IxcOrmOperator.Not);
-        parameterBuilder.WithValue(value);
+        parameterBuilder
+            .WithOperator(IxcOrmOperator.Not)
+            .WithValue(value);
+
         PrepareQuery();
+
         return this;
     }
 
 
     public IxcOrm LessThan(object value)
     {
-        parameterBuilder.WithOperator(IxcOrmOperator.LessThan);
-        parameterBuilder.WithValue(value);
+        parameterBuilder
+            .WithOperator(IxcOrmOperator.LessThan)
+            .WithValue(value);
+
         PrepareQuery();
+
         return this;
     }
 
 
     public IxcOrm LessThanOrEqual(object value)
     {
-        parameterBuilder.WithOperator(IxcOrmOperator.LessThanEquals);
-        parameterBuilder.WithValue(value);
+        parameterBuilder
+            .WithOperator(IxcOrmOperator.LessThanEquals)
+            .WithValue(value);
+
         PrepareQuery();
+
         return this;
     }
 
 
     public IxcOrm GreaterThan(object value)
     {
-        parameterBuilder.WithOperator(IxcOrmOperator.GreaterThan);
-        parameterBuilder.WithValue(value);
+        parameterBuilder
+            .WithOperator(IxcOrmOperator.GreaterThan)
+            .WithValue(value);
+
         PrepareQuery();
+
         return this;
     }
 
 
     public IxcOrm GreaterThanOrEqual(object value)
     {
-        parameterBuilder.WithOperator(IxcOrmOperator.GreaterThanEquals);
-        parameterBuilder.WithValue(value);
+        parameterBuilder
+            .WithOperator(IxcOrmOperator.GreaterThanEquals)
+            .WithValue(value);
+
         PrepareQuery();
+
         return this;
     }
 
@@ -122,10 +147,7 @@ public class IxcOrm(string table) : RequestEmitter(table)
     }
 
 
-    protected override async Task<string> EmmitRequest(
-        HttpMethod method,
-        CancellationToken? cancellationToken = null
-    )
+    protected override async Task<string> EmmitRequest(HttpMethod method, CancellationToken? cancellationToken = null)
     {
         string result = await base.EmmitRequest(method, cancellationToken);
 

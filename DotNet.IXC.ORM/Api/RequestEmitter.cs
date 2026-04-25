@@ -34,7 +34,7 @@ public class RequestEmitter : IDisposable
     }
 
 
-    public async Task<IxcResponse<T>?> GetAsync<T>()
+    public async Task<IxcResponse<T>?> GetAsync<T>() where T : class
     {
         SetupUrl();
         EnableIxcListingHeader();
@@ -43,7 +43,7 @@ public class RequestEmitter : IDisposable
     }
 
 
-    public async Task<IxcResponse<T>?> PostAsync<T>()
+    public async Task<IxcResponse<T>?> PostAsync<T>() where T : class
     {
         SetupUrl();
         DisableIxcListingHeader();
@@ -52,7 +52,7 @@ public class RequestEmitter : IDisposable
     }
 
 
-    public async Task<IxcResponse<T>?> PutAsync<T>(BigInteger id)
+    public async Task<IxcResponse<T>?> PutAsync<T>(BigInteger id) where T : class
     {
         SetupUrl(id);
         DisableIxcListingHeader();
@@ -61,7 +61,7 @@ public class RequestEmitter : IDisposable
     }
 
 
-    public async Task<IxcResponse<T>?> DeleteAsync<T>(BigInteger id)
+    public async Task<IxcResponse<T>?> DeleteAsync<T>(BigInteger id) where T : class
     {
         SetupUrl(id);
         DisableIxcListingHeader();

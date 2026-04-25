@@ -1,13 +1,17 @@
 ﻿using System.Text.Json.Serialization;
 
+
 namespace DotNet.IXC.ORM.Test.Models;
 
 
-public class Client
+public class Customer
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
     [JsonPropertyName("razao")]
     public string Razao { get; set; } = string.Empty;
+
+    [JsonPropertyName("cnpj_cpf")]
+    public string CnpjCpf { get; set; } = string.Empty;
 }

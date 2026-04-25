@@ -8,7 +8,7 @@ public class QueryBuildOptionsTest
 {
     public QueryBuildOptionsTest()
     {
-        Utils.BuildHost();
+        Utils.MockedHostBuilder().Build();
     }
 
 

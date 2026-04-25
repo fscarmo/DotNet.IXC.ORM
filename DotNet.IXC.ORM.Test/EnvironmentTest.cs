@@ -10,7 +10,7 @@ public class EnvironmentTest
     [Fact]
     public void LoadEnvironmentService()
     {
-        var host = Utils.BuildHost();
+        var host = Utils.MockedHostBuilder().Build();
         var env = host.Services.GetService<IxcOrmEnvironment>();
 
         Assert.NotNull(env);
