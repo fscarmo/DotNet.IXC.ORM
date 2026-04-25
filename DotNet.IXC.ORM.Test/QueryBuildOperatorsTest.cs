@@ -3,11 +3,15 @@
 
 public class QueryBuildOperatorsTest
 {
+    public QueryBuildOperatorsTest()
+    {
+        Utils.BuildHost();
+    }
+
+
     [Fact]
     public void QueryWithLikeOperator()
     {
-        Utils.BuildHost();
-
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
             .Like("John");
@@ -32,7 +36,6 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryWithExactlyOperator()
     {
-        Utils.BuildHost();
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
             .Exactly("John");
@@ -57,8 +60,6 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryWithNotOperator()
     {
-        Utils.BuildHost();
-
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
             .Not("John");
@@ -83,8 +84,6 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryWithLessThanOperator()
     {
-        Utils.BuildHost();
-
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .LessThan(30);
@@ -109,8 +108,6 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryWithLessThanOrEqualOperator()
     {
-        Utils.BuildHost();
-
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .LessThanOrEqual(30);
@@ -135,8 +132,6 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryWithGreaterThanOperator()
     {
-        Utils.BuildHost();
-
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .GreaterThan(18);
@@ -161,8 +156,6 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryWithGreaterThanOrEqualOperator()
     {
-        Utils.BuildHost();
-
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .GreaterThanOrEqual(18);
