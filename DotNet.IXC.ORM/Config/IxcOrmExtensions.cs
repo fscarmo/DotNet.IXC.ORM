@@ -13,4 +13,13 @@ public static class IxcOrmExtensions
         services.AddSingleton(env);
         return services;
     }
+
+
+    public static IServiceCollection AddHttpClient(this IServiceCollection services, Action<IxcOrmOptions> configure)
+    {
+        var options = IxcOrmOptions.Instance;
+        configure(options);
+        services.AddSingleton(options);
+        return services;
+    }
 }

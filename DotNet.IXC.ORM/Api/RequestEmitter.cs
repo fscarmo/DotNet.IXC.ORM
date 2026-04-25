@@ -12,8 +12,10 @@ namespace DotNet.IXC.ORM.Api;
 
 public class RequestEmitter : IDisposable
 {
-    private readonly Dictionary<string, string> headers = [];
-    private readonly HttpClient httpClient = new();
+    private readonly Dictionary<string, string> headers;
+    private readonly HttpClient httpClient;
+
+
     private string url = string.Empty;
 
 
@@ -24,6 +26,10 @@ public class RequestEmitter : IDisposable
     protected RequestEmitter(string table)
     {
         Table = table;
+
+        headers = [];
+        httpClient = IxcOrmOptions.Instance.HttpClient;
+
         SetupDefaultHeaders();
     }
 
@@ -92,10 +98,7 @@ public class RequestEmitter : IDisposable
     }
 
 
-    protected virtual async Task<string> EmmitRequest(
-        HttpMethod method,
-        CancellationToken? cancellationToken = null
-    )
+    protected virtual async Task<string> EmmitRequest(HttpMethod method, CancellationToken? cancellationToken = null)
     {
         HttpResponseMessage? response = null;
 
