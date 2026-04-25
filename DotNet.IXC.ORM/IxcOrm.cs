@@ -122,12 +122,17 @@ public class IxcOrm(string table) : RequestEmitter(table)
     }
 
 
-    protected override async Task<HttpContent> EmmitRequest(HttpMethod method)
+    protected override async Task<string> EmmitRequest(
+        HttpMethod method,
+        CancellationToken? cancellationToken = null
+    )
     {
-        var result = await base.EmmitRequest(method);
+        string result = await base.EmmitRequest(method, cancellationToken);
+
         parameterBuilder = Parameter.NewBuilder(Table);
         parameters.Clear();
         SetupQuery(string.Empty);
+
         return result;
     }
 

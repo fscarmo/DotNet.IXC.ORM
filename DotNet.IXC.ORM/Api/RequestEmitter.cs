@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http.Json;
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
@@ -27,39 +28,39 @@ public class RequestEmitter : IDisposable
     }
 
 
-    public async Task<IxcResponse> GetAsync()
+    public async Task<IxcResponse<T>?> GetAsync<T>()
     {
         SetupUrl();
         EnableIxcListingHeader();
-        var response = await EmmitRequest(HttpMethod.Post);
-        return new IxcResponse(response);
+        string content = await EmmitRequest(HttpMethod.Post);
+        return new IxcResponse<T>(content);
     }
 
 
-    public async Task<IxcResponse> PostAsync()
+    public async Task<IxcResponse<T>?> PostAsync<T>()
     {
         SetupUrl();
         DisableIxcListingHeader();
-        var response = await EmmitRequest(HttpMethod.Post);
-        return new IxcResponse(response);
+        string content = await EmmitRequest(HttpMethod.Post);
+        return new IxcResponse<T>(content);
     }
 
 
-    public async Task<IxcResponse> PutAsync(BigInteger id)
+    public async Task<IxcResponse<T>?> PutAsync<T>(BigInteger id)
     {
         SetupUrl(id);
         DisableIxcListingHeader();
-        var response = await EmmitRequest(HttpMethod.Put);
-        return new IxcResponse(response);
+        string content = await EmmitRequest(HttpMethod.Put);
+        return new IxcResponse<T>(content);
     }
 
 
-    public async Task<IxcResponse> DeleteAsync(BigInteger id)
+    public async Task<IxcResponse<T>?> DeleteAsync<T>(BigInteger id)
     {
         SetupUrl(id);
         DisableIxcListingHeader();
-        var response = await EmmitRequest(HttpMethod.Delete);
-        return new IxcResponse(response);
+        string content = await EmmitRequest(HttpMethod.Delete);
+        return new IxcResponse<T>(content);
     }
 
 
@@ -91,7 +92,10 @@ public class RequestEmitter : IDisposable
     }
 
 
-    protected virtual async Task<HttpContent> EmmitRequest(HttpMethod method)
+    protected virtual async Task<string> EmmitRequest(
+        HttpMethod method,
+        CancellationToken? cancellationToken = null
+    )
     {
         HttpResponseMessage? response = null;
 
@@ -104,10 +108,12 @@ public class RequestEmitter : IDisposable
                 request.Headers.TryAddWithoutValidation(header.Key, header.Value)
             );
 
-            response = await httpClient.SendAsync(request);
+            response = await httpClient.SendAsync(request, cancellationToken ?? CancellationToken.None);
             response.EnsureSuccessStatusCode();
 
-            return response.Content;
+            return await response
+                .Content
+                .ReadAsStringAsync(cancellationToken ?? CancellationToken.None);
         }
         catch (TaskCanceledException e)
         {
@@ -137,7 +143,10 @@ public class RequestEmitter : IDisposable
         string token = IxcOrmEnvironment.Instance.IxcAccessToken
             ?? throw new IxcOrmEnvironmentException("IxcAccessToken");
 
-        headers["Authorization"] = $"Basic {token}";
+        byte[] bytesToken = Encoding.UTF8.GetBytes(token);
+        string base64Token = Convert.ToBase64String(bytesToken);
+
+        headers["Authorization"] = $"Basic {base64Token}";
         headers["ixcsoft"] = string.Empty;
     }
 

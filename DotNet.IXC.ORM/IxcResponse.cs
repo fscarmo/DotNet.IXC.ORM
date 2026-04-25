@@ -1,7 +1,17 @@
-﻿namespace DotNet.IXC.ORM;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
-public class IxcResponse(HttpContent content)
+namespace DotNet.IXC.ORM;
+
+
+public class IxcResponse<T>(string content)
 {
-    private readonly HttpContent content = content;
+    private readonly string content = content;
+
+
+    private readonly JsonSerializerOptions _options = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
 }
