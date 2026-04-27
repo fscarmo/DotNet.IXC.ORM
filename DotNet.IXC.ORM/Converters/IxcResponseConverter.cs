@@ -7,23 +7,23 @@ namespace DotNet.IXC.ORM.Converters;
 
 public class IxcResponseConverter : JsonConverter<IxcResponse>
 {
-    public static bool ReadBaseProperty(ref Utf8JsonReader reader, string key, IxcResponse response, JsonSerializerOptions options)
+    public static void ReadBaseProperty(ref Utf8JsonReader reader, string key, IxcResponse response, JsonSerializerOptions options)
     {
         switch (key)
         {
             case "type":
             case "tipo":
                 response.Type = reader.GetString() ?? string.Empty;
-                return true;
+                break;
 
             case "message":
             case "mensagem":
                 response.Message = reader.GetString() ?? string.Empty;
-                return true;
+                break;
 
             default:
                 reader.Skip();
-                return false;
+                break;
         }
     }
 
