@@ -10,6 +10,17 @@ public class RecursosTest
 
 
     [Fact]
+    public async Task DesbloqueioDeConfianca()
+    {
+        var response = await IxcRecurso.DesbloqueioDeConfianca(9326);
+
+        Assert.NotNull(response);
+        Assert.Matches("success|sucesso", response.Type);
+        Assert.Contains("O contrato foi desbloqueado com sucesso por 3 dias.", response.Message);
+    }
+
+
+    [Fact]
     public async Task FalhaAoTentarAtivarContratoJaAtivoTest()
     {
         var response = await IxcRecurso.AtivarContrato(8466);
@@ -17,6 +28,17 @@ public class RecursosTest
         Assert.NotNull(response);
         Assert.Equal("error", response.Type);
         Assert.Contains("Não foi possível ativar o contrato ID: ", response.Message);
+    }
+
+
+    [Fact]
+    public async Task LiberacaoTemporariaTest()
+    {
+        var response = await IxcRecurso.LiberacaoTemporaria(9428);
+
+        Assert.NotNull(response);
+        Assert.Matches("success|sucesso", response.Type);
+        Assert.Contains("O contrato foi desbloqueado com sucesso por 3 dias.", response.Message);
     }
 
 
