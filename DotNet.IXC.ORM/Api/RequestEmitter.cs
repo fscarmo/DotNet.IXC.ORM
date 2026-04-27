@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
+using DotNet.IXC.ORM;
 using DotNet.IXC.ORM.Config;
 using DotNet.IXC.ORM.Exceptions;
 
@@ -23,7 +24,7 @@ public class RequestEmitter : IDisposable
     protected string Query { get; private set; } = string.Empty;
 
 
-    protected RequestEmitter(string table)
+    public RequestEmitter(string table)
     {
         Table = table;
 
@@ -34,39 +35,61 @@ public class RequestEmitter : IDisposable
     }
 
 
-    public async Task<IxcResponse<T>?> GetAsync<T>() where T : class
+    public async Task<IxcOrmResponse<T>?> GetAsync<T>() where T : class
     {
         SetupUrl();
         EnableIxcListingHeader();
         string content = await EmmitRequest(HttpMethod.Post);
-        return new IxcResponse<T>(content);
+        return new IxcOrmResponse<T>(content);
     }
 
 
-    public async Task<IxcResponse<T>?> PostAsync<T>() where T : class
+    public async Task<IxcOrmResponse<T>?> PostAsync<T>() where T : class
     {
         SetupUrl();
         DisableIxcListingHeader();
         string content = await EmmitRequest(HttpMethod.Post);
-        return new IxcResponse<T>(content);
+        return new IxcOrmResponse<T>(content);
     }
 
 
-    public async Task<IxcResponse<T>?> PutAsync<T>(BigInteger id) where T : class
+    public async Task<IxcOrmResponse<T>?> PutAsync<T>(BigInteger id) where T : class
     {
         SetupUrl(id);
         DisableIxcListingHeader();
         string content = await EmmitRequest(HttpMethod.Put);
-        return new IxcResponse<T>(content);
+        return new IxcOrmResponse<T>(content);
     }
 
 
-    public async Task<IxcResponse<T>?> DeleteAsync<T>(BigInteger id) where T : class
+    public async Task<IxcOrmResponse<T>?> DeleteAsync<T>(BigInteger id) where T : class
     {
         SetupUrl(id);
         DisableIxcListingHeader();
         string content = await EmmitRequest(HttpMethod.Delete);
-        return new IxcResponse<T>(content);
+        return new IxcOrmResponse<T>(content);
+    }
+
+
+    public async Task<IxcResponse> EmmitResourceRequest(IDictionary<string, object> query)
+    {
+        try
+        {
+            SetupUrl();
+            SetupQuery(JsonSerializer.Serialize(query));
+            var response = await EmmitRequest(HttpMethod.Post);
+            return new IxcResponse(response);
+        }
+        catch (JsonException e)
+        {
+            string content = IxcResponse.CreateResponseContentError(e.Message);
+            return new IxcResponse(content);
+        }
+        catch (IxcOrmRequestException e)
+        {
+            string content = IxcResponse.CreateResponseContentError(e.Message);
+            return new IxcResponse(content);
+        }
     }
 
 
