@@ -7,28 +7,32 @@ using DotNet.IXC.ORM.Exceptions;
 namespace DotNet.IXC.ORM;
 
 
-public class IxcResponse<T> where T : class
+public class IxcResponse
 {
-    private static string? GetHtmlContent(string content)
+    public static string CreateResponseContentError(string error)
     {
-        if (string.IsNullOrEmpty(content))
-            return null;
-
-        var document = new HtmlDocument();
-        document.LoadHtml(content);
-
-        bool hasHtml = document.DocumentNode
-            .Descendants()
-            .Any(n => n.NodeType == HtmlNodeType.Element);
-
-        if (!hasHtml)
-            return null;
-
-        return document.DocumentNode.InnerText;
+        return JsonSerializer.Serialize(new Dictionary<string, object>
+        {
+            { "type", "error" },
+            { "message", error }
+        });
     }
 
 
-    private readonly JsonSerializerOptions options = new()
+    protected static string? GetHtmlContent(string content)
+    {
+        if (content.StartsWith("<div style=\""))
+        {
+            var document = new HtmlDocument();
+            document.LoadHtml(content);
+            return document.DocumentNode.InnerText;
+        }
+
+        return null;
+    }
+
+
+    protected readonly JsonSerializerOptions options = new()
     {
         PropertyNameCaseInsensitive = true,
         NumberHandling = JsonNumberHandling.AllowReadingFromString
@@ -41,15 +45,6 @@ public class IxcResponse<T> where T : class
     [JsonPropertyName("message")]
     public string Message { get; set; } = string.Empty;
 
-    [JsonPropertyName("page")]
-    public int Page { get; set; }
-
-    [JsonPropertyName("total")]
-    public int Total { get; set; }
-
-    [JsonPropertyName("registros")]
-    public List<T> Records { get; set; } = [];
-
 
     public IxcResponse() { }
 
@@ -58,40 +53,31 @@ public class IxcResponse<T> where T : class
     {
         string? htmlContent = GetHtmlContent(content);
         if (htmlContent != null)
-        {
-            LoadResponseAsError(htmlContent);
-        }
+            LoadStatusAsError(htmlContent);
         else
-        {
-            LoadResponseAsSuccess(content);
-        }
+            LoadStatusAsSuccess(content);
     }
 
 
-    private void LoadResponseAsError(string content)
+    protected void LoadStatusAsError(string content)
     {
         Type = "error";
         Message = content;
-        Page = 0;
-        Total = 0;
     }
 
 
-    private void LoadResponseAsSuccess(string content)
+    protected void LoadStatusAsSuccess(string content)
     {
         try
         {
-            var deserialized = JsonSerializer.Deserialize<IxcResponse<T>>(content, options);
+            var deserialized = JsonSerializer.Deserialize<IxcResponse>(content, options);
 
             Type = deserialized?.Type ?? string.Empty;
             Message = deserialized?.Message ?? string.Empty;
-            Page = deserialized?.Page ?? 0;
-            Total = deserialized?.Total ?? 0;
-            Records = deserialized?.Records ?? [];
         }
         catch (JsonException e)
         {
-            throw new IxcOrmResponseException("Falha ao desserializar a resposta do IXC.", e);
+            throw new IxcOrmResponseException("Falha ao desserializar o status e a mensagem da resposta do IXC.", e);
         }
     }
 }
