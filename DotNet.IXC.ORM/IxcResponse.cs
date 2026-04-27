@@ -1,7 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using DotNet.IXC.ORM.Exceptions;
+using DotNet.IXC.ORM.Converters;
 
 
 namespace DotNet.IXC.ORM;
@@ -35,14 +35,16 @@ public class IxcResponse
     protected readonly JsonSerializerOptions options = new()
     {
         PropertyNameCaseInsensitive = true,
-        NumberHandling = JsonNumberHandling.AllowReadingFromString
+        Converters =
+        {
+            new IxcResponseConverter(),
+            new IxcOrmResponseConverterFactory()
+        }
     };
 
 
-    [JsonPropertyName("type")]
     public string Type { get; set; } = string.Empty;
 
-    [JsonPropertyName("message")]
     public string Message { get; set; } = string.Empty;
 
 
@@ -77,6 +79,7 @@ public class IxcResponse
         }
         catch (JsonException e)
         {
+            System.Diagnostics.Debug.WriteLine($"ERRO: {e.Message}");
             throw new IxcOrmResponseException("Falha ao desserializar o status e a mensagem da resposta do IXC.", e);
         }
     }

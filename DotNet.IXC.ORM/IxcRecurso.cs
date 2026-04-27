@@ -7,6 +7,8 @@ namespace DotNet.IXC.ORM;
 public abstract class IxcRecurso
 {
     public static readonly string SRC_ATIVAR_CLIENTE = "cliente_contrato_ativar_cliente";
+    public static readonly string SRC_DESBLOQUEIO_CONFIANCA = "desbloqueio_confianca";
+    public static readonly string SRC_LIBERACAO_TEMPORARIA = "cliente_contrato_btn_lib_temp_24722";
     public static readonly string SRC_LIMPAR_MAC = "radusuarios_25452";
 
 
@@ -21,7 +23,37 @@ public abstract class IxcRecurso
             { "id_contrato",  idContrato }
         };
 
-        var emitter = new RequestEmitter(SRC_ATIVAR_CLIENTE);
+        using var emitter = new RequestEmitter(SRC_ATIVAR_CLIENTE);
+        return await emitter.EmmitResourceRequest(query);
+    }
+
+
+    public static async Task<IxcResponse> DesbloqueioDeConfianca(int idContrato)
+    {
+        if (idContrato < 1)
+            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(idContrato));
+
+        var query = new Dictionary<string, object>
+        {
+            { "id", idContrato }
+        };
+
+        using var emitter = new RequestEmitter(SRC_DESBLOQUEIO_CONFIANCA);
+        return await emitter.EmmitResourceRequest(query);
+    }
+
+
+    public static async Task<IxcResponse> LiberacaoTemporaria(int idContrato)
+    {
+        if (idContrato < 1)
+            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(idContrato));
+
+        var query = new Dictionary<string, object>
+        {
+            { "id", idContrato }
+        };
+
+        using var emitter = new RequestEmitter(SRC_LIBERACAO_TEMPORARIA);
         return await emitter.EmmitResourceRequest(query);
     }
 
@@ -36,7 +68,7 @@ public abstract class IxcRecurso
             { "get_id",  idLogin }
         };
 
-        var emitter = new RequestEmitter(SRC_LIMPAR_MAC);
+        using var emitter = new RequestEmitter(SRC_LIMPAR_MAC);
         return await emitter.EmmitResourceRequest(query);
     }
 }
