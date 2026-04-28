@@ -10,7 +10,7 @@ public abstract class IxcRecord
 {
     [JsonPropertyName("id")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public BigInteger? Id { get; set; }
+    public int? Id { get; set; }
 
 
     public string ToJsonString()
