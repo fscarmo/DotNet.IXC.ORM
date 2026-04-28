@@ -24,7 +24,7 @@ public abstract class IxcRecurso
         };
 
         using var emitter = new RequestEmitter(SRC_ATIVAR_CLIENTE);
-        return await emitter.EmmitResourceRequest(query);
+        return await emitter.EmmitResourceRequestAsync(query);
     }
 
 
@@ -39,7 +39,7 @@ public abstract class IxcRecurso
         };
 
         using var emitter = new RequestEmitter(SRC_DESBLOQUEIO_CONFIANCA);
-        return await emitter.EmmitResourceRequest(query);
+        return await emitter.EmmitResourceRequestAsync(query);
     }
 
 
@@ -54,7 +54,7 @@ public abstract class IxcRecurso
         };
 
         using var emitter = new RequestEmitter(SRC_LIBERACAO_TEMPORARIA);
-        return await emitter.EmmitResourceRequest(query);
+        return await emitter.EmmitResourceRequestAsync(query);
     }
 
 
@@ -69,6 +69,6 @@ public abstract class IxcRecurso
         };
 
         using var emitter = new RequestEmitter(SRC_LIMPAR_MAC);
-        return await emitter.EmmitResourceRequest(query);
+        return await emitter.EmmitResourceRequestAsync(query);
     }
 }

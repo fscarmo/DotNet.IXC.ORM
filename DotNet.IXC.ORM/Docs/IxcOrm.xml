@@ -121,9 +121,9 @@
 		</returns>
 	</member>
 
-	<member name="EmmitRequest">
+	<member name="EmmitRequestAsync">
 		<summary>
-			Sobrescreve a chamada para <see cref="M:DotNet.IXC.ORM.Api.RequestEmitter.EmmitRequest(System.Net.Http.HttpMethod,System.Nullable{System.Threading.CancellationToken})"/>.
+			Sobrescreve a chamada para <see cref="M:DotNet.IXC.ORM.Api.RequestEmitter.EmmitRequestAsync(System.Net.Http.HttpMethod,System.Nullable{System.Threading.CancellationToken})"/>.
 			Envia a requisição para a API do IXC Provedor e retorna o conteúdo em uma string.
 		</summary>
 		<param name="method">O método HTTP (GET, POST, PUT, DELETE).</param>

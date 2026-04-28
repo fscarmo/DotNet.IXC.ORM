@@ -164,10 +164,10 @@ public class IxcOrm(string table) : RequestEmitter(table)
     }
 
 
-    /// <include file='Docs/IxcOrm.xml' path='docs/member[@name="EmmitRequest"]/*'/>
-    protected override async Task<string> EmmitRequest(HttpMethod method, CancellationToken? cancellationToken = null)
+    /// <include file='Docs/IxcOrm.xml' path='docs/member[@name="EmmitRequestAsync"]/*'/>
+    protected override async Task<string> EmmitRequestAsync(HttpMethod method, CancellationToken? cancellationToken = null)
     {
-        string result = await base.EmmitRequest(method, cancellationToken);
+        string result = await base.EmmitRequestAsync(method, cancellationToken);
 
         parameterBuilder = Parameter.NewBuilder(Table);
         parameters.Clear();
