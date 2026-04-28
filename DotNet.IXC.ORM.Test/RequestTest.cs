@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using System.Net;
+﻿using System.Net;
 using DotNet.IXC.ORM.Test.Models;
 
 
@@ -8,15 +7,6 @@ namespace DotNet.IXC.ORM.Test;
 
 public class RequestTest
 {
-    private readonly IHostBuilder hostBuilder;
-
-
-    public RequestTest()
-    {
-        hostBuilder = Utils.MockedHostBuilder();
-    }
-
-
     [Fact]
     public async Task SuccessfulCustomerResponse()
     {
@@ -34,8 +24,11 @@ public class RequestTest
         }".Replace("\r", "")
           .Replace("\n", "");
 
-        Utils.MockedHttpMessageHandler(hostBuilder, HttpStatusCode.OK, response)
-            .Build();
+        Utils.MockedHttpMessageHandler(
+            Utils.MockedHostBuilder(),
+            HttpStatusCode.OK,
+            response
+        ).Build();
 
         var orm = new IxcOrm("cliente");
 
