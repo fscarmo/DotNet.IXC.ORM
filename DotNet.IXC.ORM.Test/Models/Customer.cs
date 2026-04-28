@@ -1,14 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace DotNet.IXC.ORM.Test.Models;
 
 
-public class Customer
+public class Customer : IxcRecord
 {
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
-
     [JsonPropertyName("razao")]
     public string Razao { get; set; } = string.Empty;
 

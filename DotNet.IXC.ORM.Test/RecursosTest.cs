@@ -12,7 +12,7 @@ public class RecursosTest
     [Fact]
     public async Task DesbloqueioDeConfianca()
     {
-        var response = await IxcRecurso.DesbloqueioDeConfianca(9326);
+        var response = await IxcResource.DesbloqueioDeConfianca(9326);
 
         Assert.NotNull(response);
         Assert.Matches("success|sucesso", response.Type);
@@ -23,7 +23,7 @@ public class RecursosTest
     [Fact]
     public async Task FalhaAoTentarAtivarContratoJaAtivoTest()
     {
-        var response = await IxcRecurso.AtivarContrato(8466);
+        var response = await IxcResource.AtivarContrato(8466);
 
         Assert.NotNull(response);
         Assert.Equal("error", response.Type);
@@ -34,7 +34,7 @@ public class RecursosTest
     [Fact]
     public async Task LiberacaoTemporariaTest()
     {
-        var response = await IxcRecurso.LiberacaoTemporaria(9428);
+        var response = await IxcResource.LiberacaoTemporaria(9428);
 
         Assert.NotNull(response);
         Assert.Matches("success|sucesso", response.Type);
@@ -45,7 +45,7 @@ public class RecursosTest
     [Fact]
     public async Task LimparMacTest()
     {
-        var response = await IxcRecurso.LimparMac(9159);
+        var response = await IxcResource.LimparMac(9159);
 
         Assert.NotNull(response);
         Assert.Equal("success", response.Type);
