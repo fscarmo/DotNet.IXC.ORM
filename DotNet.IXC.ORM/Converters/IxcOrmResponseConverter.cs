@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace DotNet.IXC.ORM.Converters;
 
 
-public class IxcOrmResponseConverter<T> : JsonConverter<IxcOrmResponse<T>> where T : class
+public class IxcOrmResponseConverter<T> : JsonConverter<IxcOrmResponse<T>> where T : IxcRecord
 {
     public override IxcOrmResponse<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

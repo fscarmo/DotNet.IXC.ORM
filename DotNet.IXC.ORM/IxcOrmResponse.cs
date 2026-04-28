@@ -5,7 +5,7 @@ using DotNet.IXC.ORM.Exceptions;
 namespace DotNet.IXC.ORM;
 
 
-public sealed class IxcOrmResponse<T> : IxcResponse where T : class
+public sealed class IxcOrmResponse<T> : IxcResponse where T : IxcRecord
 {
     public int Page { get; set; }
 
