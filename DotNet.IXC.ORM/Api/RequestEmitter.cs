@@ -14,9 +14,8 @@ public class RequestEmitter : IDisposable
 {
     private readonly Dictionary<string, string> headers;
     private readonly HttpClient httpClient;
-    private bool disposed;
-
     private string url = string.Empty;
+    private bool disposed;
 
 
     protected string Table { get; private set; } = string.Empty;
