@@ -1,5 +1,5 @@
-﻿using System.Net;
-using System.Net.Http.Json;
+﻿using System;
+using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
@@ -15,7 +15,7 @@ public class RequestEmitter : IDisposable
 {
     private readonly Dictionary<string, string> headers;
     private readonly HttpClient httpClient;
-
+    private bool disposed;
 
     private string url = string.Empty;
 
@@ -95,8 +95,22 @@ public class RequestEmitter : IDisposable
 
     public void Dispose()
     {
-        headers.Clear();
-        httpClient.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed) return;
+
+        if (disposing)
+        {
+            headers.Clear();
+            httpClient.Dispose();
+        }
+
+        disposed = true;
     }
 
 
@@ -116,7 +130,7 @@ public class RequestEmitter : IDisposable
         catch (JsonException e)
         {
             throw new ArgumentException(
-                "A query de busca não está em um formato JSON válido.", nameof(query), e);
+                "A query de busca está em um formato JSON inválido.", nameof(query), e);
         }
     }
 
