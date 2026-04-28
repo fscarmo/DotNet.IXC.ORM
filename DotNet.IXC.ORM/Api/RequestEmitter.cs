@@ -48,7 +48,7 @@ public class RequestEmitter : IDisposable
 
 
     /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="GetAsync"]/*'/>
-    public async Task<IxcOrmResponse<T>> GetAsync<T>() where T : class
+    public async Task<IxcOrmResponse<T>> GetAsync<T>() where T : IxcRecord
     {
         SetupUrl();
 
@@ -60,9 +60,10 @@ public class RequestEmitter : IDisposable
 
 
     /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="PostAsync"]/*'/>
-    public async Task<IxcResponse> PostAsync(object record)
+    public async Task<IxcResponse> PostAsync<T>(T record) where T : IxcRecord
     {
         SetupUrl();
+        SetupQuery(record.ToJsonString());
 
         headers[IXCSOFT_HEADER_KEY] = string.Empty;
 
@@ -72,9 +73,10 @@ public class RequestEmitter : IDisposable
 
 
     /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="PutAsync"]/*'/>
-    public async Task<IxcResponse> PutAsync(BigInteger id, object record)
+    public async Task<IxcResponse> PutAsync<T>(BigInteger id, T record) where T : IxcRecord
     {
         SetupUrl(id);
+        SetupQuery(record.ToJsonString());
 
         headers[IXCSOFT_HEADER_KEY] = string.Empty;
 
