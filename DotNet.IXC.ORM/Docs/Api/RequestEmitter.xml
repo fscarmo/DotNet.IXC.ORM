@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<docs>
+
+	<member name="Constructor">
+		<summary>
+			Instancia a classe <see cref="T:DotNet.IXC.ORM.Api.RequestEmitter"/> definindo o endpoint de destino.
+		</summary>
+		<param name="table">O endpoint da API do IXC Provedor para o qual a requisição será enviada.</param>
+	</member>
+
+	<member name="GetAsync">
+		<summary>
+			Envia uma requisição HTTP para a API do IXC Provedor para listar registros, utilizando os filtros
+			definidos anteriormente através do método <see cref="M:DotNet.IXC.ORM.Api.RequestEmitter.SetupQuery(System.String)"/>.
+		</summary>
+		<remarks>
+			Embora o método se chame <c>GetAsync</c>, ele realiza internamente uma requisição do tipo <c>POST</c>.
+			O comportamento de listagem é determinado pela presença do cabeçalho <c>["ixcsoft": "listar"]</c>.
+		</remarks>
+		<exception cref="T:DotNet.IXC.ORM.Exceptions.IxcOrmRequestException">
+			Lançada quando ocorre uma falha na comunicação com o servidor, na requisição HTTP,
+			ou quando a API responde com um status code diferente de 200 (OK).
+		</exception>
+	</member>
+
+	<member name="PostAsync">
+		<summary>
+			Envia uma requisição HTTP para a API do IXC Provedor a fim de inserir um novo registro na tabela
+			definida pelo parâmetro <c>table</c> no construtor.
+		</summary>
+		<param name="record">O objeto contendo os dados do novo registro a ser inserido no banco de dados.</param>
+		<returns>
+			Um objeto <see cref="T:DotNet.IXC.ORM.Api.IxcResponse"/> contendo o status da operação e uma mensagem informativa sobre o resultado da requisição.
+		</returns>
+		<exception cref="T:DotNet.IXC.ORM.Exceptions.IxcOrmRequestException">
+			Lançada quando ocorre uma falha na comunicação com o servidor, na requisição HTTP,
+			ou quando a API responde com um status code diferente de 200 (OK).
+		</exception>
+	</member>
+
+	<member name="PutAsync">
+		<summary>
+			Envia uma requisição HTTP para a API do IXC Provedor a fim de atualizar um ou mais campos de um registro
+			na tabela definida pelo parâmetro <c>table</c> no construtor.
+		</summary>
+		<param name="id">O identificador do registro que deve ser atualizado no banco de dados.</param>
+		<param name="record">O objeto contendo os campos e valores que devem ser atualizados no banco de dados.</param>
+		<returns>
+			Um objeto <see cref="T:DotNet.IXC.ORM.Api.IxcResponse"/> contendo o status da requisição e uma mensagem informativa sobre o sucesso ou erro da operação.
+		</returns>
+		<exception cref="T:DotNet.IXC.ORM.Exceptions.IxcOrmRequestException">
+			Lançada quando ocorre uma falha na comunicação com o servidor, na requisição HTTP,
+			ou quando a API responde com um status code diferente de 200 (OK).
+		</exception>
+	</member>
+
+	<member name="DeleteAsync">
+		<summary>
+			Envia uma requisição HTTP para a API do IXC Provedor a fim de excluir um registro específico do banco de dados.
+		</summary>
+		<param name="id">O identificador exclusivo (ID) do registro a ser removido do banco de dados do IXC Provedor.</param>
+		<returns>
+			Um objeto <see cref="T:DotNet.IXC.ORM.Api.IxcResponse"/> contendo o resultado da operação.
+		</returns>
+		<exception cref="T:DotNet.IXC.ORM.Exceptions.IxcOrmRequestException">
+			Lançada quando ocorre uma falha na comunicação com o servidor, na requisição HTTP,
+			ou quando a API responde com um status code diferente de 200 (OK).
+		</exception>
+	</member>
+
+	<member name="EmmitResourceRequestAsync">
+		<summary>
+			Método assíncrono que emite uma requisição HTTP para recursos específicos da API do IXC Provedor.
+			Consulte os recursos disponíveis na <see href="https://wikiapiprovedor.ixcsoft.com.br/"> documentação oficial
+			</see> da API do IXC Provedor.
+		</summary>
+		<remarks>
+			Se o dicionário de consulta (query) não puder ser serializado para JSON ou se ocorrer uma exceção
+			específica da requisição, o IxcResponse retornado conterá informações de erro. O método sempre retorna
+			um objeto de resposta, mesmo em cenários de erro.
+		</remarks>
+		<param name="query">
+			Um dicionário contendo os parâmetros da consulta a serem incluídos na requisição de recurso. As chaves
+			representam os nomes dos parâmetros e os valores representam seus respectivos valores. Não pode ser nulo.
+		</param>
+		<returns>
+			Uma tarefa que representa a operação assíncrona. O resultado da tarefa contém um objeto
+			<see cref="T:DotNet.IXC.ORM.Api.IxcResponse"/> com os dados de resposta da requisição de recurso.
+			Se ocorrer um erro durante a serialização ou no processamento da requisição, a resposta conterá detalhes do erro.
+		</returns>
+	</member>
+
+	<member name="Dispose">
+		<summary>
+			Libera todos os recursos usados pela instância atual da classe.
+		</summary>
+		<remarks>
+			Chame este método quando terminar de usar o objeto para liberar recursos não gerenciados
+			explicitamente. Após chamar <c>Dispose</c>, o objeto não deve ser mais utilizado. Este método pode ser chamado
+			várias vezes sem lançar exceção.
+		</remarks>
+	</member>
+
+	<member name="Dispose.Disposing">
+		<summary>
+			Libera os recursos não gerenciados utilizados pelo objeto e, opcionalmente, libera os recursos gerenciados.
+		</summary>
+		<remarks>
+			Este método é chamado por métodos públicos <c>Dispose</c> e pelo finalizador. Quando o parâmetro
+			<paramref name="disposing"/> é <see langword="true"/>, o método libera todos os recursos mantidos por objetos
+			gerenciados referenciados. Quando <see langword="false"/>, o método libera apenas recursos não gerenciados.
+			Substitua este método para liberar recursos adicionais específicos da subclasse.
+		</remarks>
+		<param name="disposing">
+			<see langword="true"/> para liberar recursos gerenciados e não gerenciados;
+			<see langword="false"/> para liberar apenas recursos não gerenciados.
+		</param>
+	</member>
+
+	<member name="SetupQuery">
+		<summary>
+			Define a query de busca que será enviada para a API do IXC Provedor.
+		</summary>
+		<param name="query">
+			Uma <see cref="T:System.String"/> em formato JSON contendo a query, seguindo o padrão exigido pela API do IXC Provedor.
+		</param>
+	</member>
+
+	<member name="EmmitRequestAsync">
+		<summary>
+			Envia a requisição para a API do IXC Provedor e retorna o conteúdo da resposta em uma <see cref="T:System.String"/>.
+		</summary>
+		<param name="method">O método HTTP a ser utilizado (GET, POST, PUT, DELETE).</param>
+		<param name="cancellationToken">Um token de cancelamento opcional para cancelar a requisição, se necessário.</param>
+		<returns>Uma string com o conteúdo da resposta.</returns>
+		<exception cref="T:DotNet.IXC.ORM.Exceptions.IxcOrmRequestException">
+			Lançada quando ocorre uma falha na comunicação com o servidor, na requisição HTTP,
+			ou quando a API responde com um status code diferente de 200 (OK).
+		</exception>
+	</member>
+
+</docs>

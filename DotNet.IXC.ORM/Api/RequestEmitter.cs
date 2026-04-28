@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.Json;
@@ -10,8 +9,22 @@ using DotNet.IXC.ORM.Exceptions;
 namespace DotNet.IXC.ORM.Api;
 
 
+/// <summary>
+/// A classe <c>RequestEmitter</c> constrói o a estrutura das requisições e as executa, além de fornecer acesso
+/// padronizado aos métodos de requisição da API do IXC Provedor.
+/// </summary>
+/// <remarks>
+/// Autor: Felipe S. Carmo <br/>
+/// Versão: 1.0.0 <br/>
+/// Desde: 2026-04-28
+/// </remarks>
 public class RequestEmitter : IDisposable
 {
+    private static readonly string AUTH_HEADER_KEY = "Authorization";
+    private static readonly string IXCSOFT_HEADER_KEY = "ixcsoft";
+    private static readonly string IXCSOFT_HEADER_VALUE = "listar";
+
+
     private readonly Dictionary<string, string> headers;
     private readonly HttpClient httpClient;
     private string url = string.Empty;
@@ -22,6 +35,7 @@ public class RequestEmitter : IDisposable
     protected string Query { get; private set; } = string.Empty;
 
 
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="Constructor"]/*'/>
     public RequestEmitter(string table)
     {
         Table = table;
@@ -33,49 +47,62 @@ public class RequestEmitter : IDisposable
     }
 
 
-    public async Task<IxcOrmResponse<T>?> GetAsync<T>() where T : class
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="GetAsync"]/*'/>
+    public async Task<IxcOrmResponse<T>> GetAsync<T>() where T : class
     {
         SetupUrl();
-        EnableIxcListingHeader();
-        string content = await EmmitRequest(HttpMethod.Post);
+
+        headers[IXCSOFT_HEADER_KEY] = IXCSOFT_HEADER_VALUE;
+
+        string content = await EmmitRequestAsync(HttpMethod.Post);
         return new IxcOrmResponse<T>(content);
     }
 
 
-    public async Task<IxcOrmResponse<T>?> PostAsync<T>() where T : class
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="PostAsync"]/*'/>
+    public async Task<IxcResponse> PostAsync(object record)
     {
         SetupUrl();
-        DisableIxcListingHeader();
-        string content = await EmmitRequest(HttpMethod.Post);
-        return new IxcOrmResponse<T>(content);
+
+        headers[IXCSOFT_HEADER_KEY] = string.Empty;
+
+        string content = await EmmitRequestAsync(HttpMethod.Post);
+        return new IxcResponse(content);
     }
 
 
-    public async Task<IxcOrmResponse<T>?> PutAsync<T>(BigInteger id) where T : class
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="PutAsync"]/*'/>
+    public async Task<IxcResponse> PutAsync(BigInteger id, object record)
     {
         SetupUrl(id);
-        DisableIxcListingHeader();
-        string content = await EmmitRequest(HttpMethod.Put);
-        return new IxcOrmResponse<T>(content);
+
+        headers[IXCSOFT_HEADER_KEY] = string.Empty;
+
+        string content = await EmmitRequestAsync(HttpMethod.Put);
+        return new IxcResponse(content);
     }
 
 
-    public async Task<IxcOrmResponse<T>?> DeleteAsync<T>(BigInteger id) where T : class
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="DeleteAsync"]/*'/>
+    public async Task<IxcResponse> DeleteAsync(BigInteger id)
     {
         SetupUrl(id);
-        DisableIxcListingHeader();
-        string content = await EmmitRequest(HttpMethod.Delete);
-        return new IxcOrmResponse<T>(content);
+
+        headers[IXCSOFT_HEADER_KEY] = string.Empty;
+
+        string content = await EmmitRequestAsync(HttpMethod.Delete);
+        return new IxcResponse(content);
     }
 
 
-    public async Task<IxcResponse> EmmitResourceRequest(IDictionary<string, object> query)
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="EmmitResourceRequestAsync"]/*'/>
+    public async Task<IxcResponse> EmmitResourceRequestAsync(IDictionary<string, object> query)
     {
         try
         {
             SetupUrl();
             SetupQuery(JsonSerializer.Serialize(query));
-            var response = await EmmitRequest(HttpMethod.Post);
+            var response = await EmmitRequestAsync(HttpMethod.Post);
             return new IxcResponse(response);
         }
         catch (JsonException e)
@@ -91,6 +118,7 @@ public class RequestEmitter : IDisposable
     }
 
 
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="Dispose"]/*'/>
     public void Dispose()
     {
         Dispose(true);
@@ -98,6 +126,7 @@ public class RequestEmitter : IDisposable
     }
 
 
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="Dispose.Disposing"]/*'/>
     protected virtual void Dispose(bool disposing)
     {
         if (disposed) return;
@@ -112,6 +141,7 @@ public class RequestEmitter : IDisposable
     }
 
 
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="SetupQuery"]/*'/>
     protected void SetupQuery(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
@@ -133,7 +163,8 @@ public class RequestEmitter : IDisposable
     }
 
 
-    protected virtual async Task<string> EmmitRequest(HttpMethod method, CancellationToken? cancellationToken = null)
+    /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="EmmitRequestAsync"]/*'/>
+    protected virtual async Task<string> EmmitRequestAsync(HttpMethod method, CancellationToken? cancellationToken = null)
     {
         HttpResponseMessage? response = null;
 
@@ -156,7 +187,7 @@ public class RequestEmitter : IDisposable
         catch (TaskCanceledException e)
         {
             throw new IxcOrmRequestException(
-                "Falha na conexão com o servidor. O tempo limite da requisição HTTP foi excedido.", e);
+                "Falha na conexão com o servidor. O tempo limite da requisição foi excedido.", e);
         }
         catch (InvalidOperationException e)
         {
@@ -184,8 +215,8 @@ public class RequestEmitter : IDisposable
         byte[] bytesToken = Encoding.UTF8.GetBytes(token);
         string base64Token = Convert.ToBase64String(bytesToken);
 
-        headers["Authorization"] = $"Basic {base64Token}";
-        headers["ixcsoft"] = string.Empty;
+        headers[AUTH_HEADER_KEY] = $"Basic {base64Token}";
+        headers[IXCSOFT_HEADER_KEY] = string.Empty;
     }
 
 
@@ -204,17 +235,5 @@ public class RequestEmitter : IDisposable
             ?? throw new IxcOrmEnvironmentException("IxcServerDomain");
 
         url = $"https://{domain}/webservice/v1/{Table}/{id}";
-    }
-
-
-    private void EnableIxcListingHeader()
-    {
-        headers["ixcsoft"] = "listar";
-    }
-
-
-    private void DisableIxcListingHeader()
-    {
-        headers["ixcsoft"] = string.Empty;
     }
 }
