@@ -31,7 +31,7 @@ public class IxcOrm(string table) : RequestEmitter(table)
 
     public IxcOrm WithPagination(int page, int rows)
     {
-        this.pagination = new Pagination(page, rows);
+        pagination = new Pagination(page, rows);
         return this;
     }
 
