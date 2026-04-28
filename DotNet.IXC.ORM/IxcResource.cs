@@ -4,7 +4,7 @@
 namespace DotNet.IXC.ORM;
 
 
-public abstract class IxcRecurso
+public abstract class IxcResource
 {
     public static readonly string SRC_ATIVAR_CLIENTE = "cliente_contrato_ativar_cliente";
     public static readonly string SRC_DESBLOQUEIO_CONFIANCA = "desbloqueio_confianca";
