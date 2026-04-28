@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<docs>
+	
+	<member name="ValidateQuery">
+		<summary>
+			Compara a string <c>expected</c> com a query gerada pela classe, ignorando espaços em branco e quebras de linha.
+			Retorna <see langword="true"/> se as strings forem equivalentes, ou <see langword="false"/> caso contrário.
+		</summary>
+		<param name="expected">A string esperada para comparação com a query gerada.</param>
+		<returns>
+			<see langword="true"/> se as strings forem equivalentes, ou <see langword="false"/> caso contrário.
+		</returns>
+	</member>
+
+	<member name="WithPagination">
+		<summary>
+			Define a paginação na query de consulta.
+		</summary>
+		<param name="page">O número da página a ser retornada.</param>
+		<param name="rows">A quantidade de registros por página.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="OrderBy">
+		<summary>
+			Define como a API do IXC Provedor deverá ordenar os dados retornados pela busca.
+		</summary>
+		<param name="sortName">O campo da tabela que será usado para ordenar os registros retornados.</param>
+		<param name="sortOrder">O tipo de ordenação (asc | desc).</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="Where">
+		<summary>
+			Inicia um novo objeto de parâmetro para a propriedade <c>grid_param</c> da query.
+		</summary>
+		<param name="column">O campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="Like">
+		<summary>
+			Adiciona o operador de comparação <c>(L)</c> e o valor a ser filtrado no objeto de parâmetro iniciado por
+			<see cref="M:DotNet.IXC.ORM.IxcOrm.Where(System.String)"/>.
+		</summary>
+		<param name="value">O valor do campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="Exactly">
+		<summary>
+			Adiciona o operador de comparação <c>(=)</c> e o valor a ser filtrado no objeto de parâmetro iniciado por
+			<see cref="M:DotNet.IXC.ORM.IxcOrm.Where(System.String)"/>.
+		</summary>
+		<param name="value">O valor do campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="Not">
+		<summary>
+			Adiciona o operador de comparação <c>(!=)</c> e o valor a ser filtrado no objeto de parâmetro iniciado por
+			<see cref="M:DotNet.IXC.ORM.IxcOrm.Where(System.String)"/>.
+		</summary>
+		<param name="value">O valor do campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="LessThan">
+		<summary>
+			Adiciona o operador de comparação <c>(&lt;)</c> e o valor a ser filtrado no objeto de parâmetro iniciado por
+			<see cref="M:DotNet.IXC.ORM.IxcOrm.Where(System.String)"/>.
+		</summary>
+		<param name="value">O valor do campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="LessThanOrEqual">
+		<summary>
+			Adiciona o operador de comparação <c>(&lt;=)</c> e o valor a ser filtrado no objeto de parâmetro iniciado por
+			<see cref="M:DotNet.IXC.ORM.IxcOrm.Where(System.String)"/>.
+		</summary>
+		<param name="value">O valor do campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="GreaterThan">
+		<summary>
+			Adiciona o operador de comparação <c>(&gt;)</c> e o valor a ser filtrado no objeto de parâmetro iniciado por
+			<see cref="M:DotNet.IXC.ORM.IxcOrm.Where(System.String)"/>.
+		</summary>
+		<param name="value">O valor do campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="GreaterThanOrEqual">
+		<summary>
+			Adiciona o operador de comparação <c>(&gt;=)</c> e o valor a ser filtrado no objeto de parâmetro iniciado por
+			<see cref="M:DotNet.IXC.ORM.IxcOrm.Where(System.String)"/>.
+		</summary>
+		<param name="value">O valor do campo da tabela que será usado como filtro na busca.</param>
+		<returns>
+			A própria instância de <see cref="T:DotNet.IXC.ORM.IxcOrm"/>.
+		</returns>
+	</member>
+
+	<member name="EmmitRequest">
+		<summary>
+			Sobrescreve a chamada para <see cref="M:DotNet.IXC.ORM.Api.RequestEmitter.EmmitRequest(System.Net.Http.HttpMethod,System.Nullable{System.Threading.CancellationToken})"/>.
+			Envia a requisição para a API do IXC Provedor e retorna o conteúdo em uma string.
+		</summary>
+		<param name="method">O método HTTP (GET, POST, PUT, DELETE).</param>
+		<param name="cancellationToken">Token de cancelamento opcional.</param>
+		<returns>O conteúdo da resposta em uma string.</returns>
+		<exception cref="T:DotNet.IXC.ORM.Exceptions.IxcOrmRequestException">
+			Lançada quando ocorre uma falha na comunicação com o servidor, na requisição HTTP.
+			Ou quando a API responde com um status code diferente de 200 (OK).
+		</exception>
+	</member>
+
+</docs>
