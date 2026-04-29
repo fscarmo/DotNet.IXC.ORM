@@ -73,7 +73,7 @@ public class RequestEmitter : IDisposable
 
 
     /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="PutAsync"]/*'/>
-    public async Task<IxcResponse> PutAsync<T>(BigInteger id, T record) where T : IxcRecord
+    public async Task<IxcResponse> PutAsync<T>(int id, T record) where T : IxcRecord
     {
         SetupUrl(id);
         SetupQuery(record.ToJsonString());
@@ -86,7 +86,7 @@ public class RequestEmitter : IDisposable
 
 
     /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="DeleteAsync"]/*'/>
-    public async Task<IxcResponse> DeleteAsync(BigInteger id)
+    public async Task<IxcResponse> DeleteAsync(int id)
     {
         SetupUrl(id);
 
@@ -231,7 +231,7 @@ public class RequestEmitter : IDisposable
     }
 
 
-    private void SetupUrl(BigInteger id)
+    private void SetupUrl(int id)
     {
         string domain = IxcOrmEnvironment.Instance.IxcServerDomain
             ?? throw new IxcOrmEnvironmentException("IxcServerDomain");
