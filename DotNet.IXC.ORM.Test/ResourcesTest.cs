@@ -1,9 +1,9 @@
 ﻿namespace DotNet.IXC.ORM.Test;
 
 
-public class RecursosTest
+public class ResourcesTest
 {
-    public RecursosTest()
+    public ResourcesTest()
     {
         Utils.MockedHostBuilder().Build();
     }
