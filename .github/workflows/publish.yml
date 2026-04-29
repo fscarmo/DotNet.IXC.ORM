@@ -7,6 +7,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -18,6 +21,14 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release
+
+      - name: Run Tests
+        run: |
+          dotnet test ./DotNet.IXC.ORM.Test/DotNet.IXC.ORM.Test.csproj --configuration Release
+          --no-build --verbosity normal
+        env:
+          IxcOrm__AccessToken: "0:1234567891012345678910123456789101234567891012345678910123456789"
+          IxcOrm__ServerDomain: "www.dominio.com.br"
 
   deploy:
     runs-on: ubuntu-latest
