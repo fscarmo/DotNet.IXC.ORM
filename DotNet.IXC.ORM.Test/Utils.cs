@@ -11,7 +11,7 @@ namespace DotNet.IXC.ORM.Test;
 
 public static class Utils
 {
-    public static IHostBuilder MockedHostBuilder()
+    public static IHostBuilder MockedHostBuilderWithAppSettings()
     {
         return new HostBuilder()
             .ConfigureAppConfiguration((context, config) =>
@@ -21,12 +21,40 @@ public static class Utils
             .ConfigureServices((context, services) =>
             {
                 var section = context.Configuration.GetSection("IxcOrm")
-                    ?? throw new Exception("A seção IxcOrm está faltando no arquivo appsettings.json.");
+                    ?? throw new Exception("A seção \"IxcOrm\" não está presente no arquivo appsettings.json.");
 
                 services.AddIxcOrmEnvironment(env =>
                 {
-                    string? ixcAccessToken = section["IxcAccessToken"];
-                    string? ixcServerDomain = section["IxcServerDomain"];
+                    string? ixcAccessToken = section["AccessToken"];
+                    string? ixcServerDomain = section["ServerDomain"];
+
+                    if (!string.IsNullOrWhiteSpace(ixcAccessToken) &&
+                        !string.IsNullOrWhiteSpace(ixcServerDomain))
+                    {
+                        env.SetupAccessToken(ixcAccessToken);
+                        env.SetupServerDomain(ixcServerDomain);
+                    }
+                });
+            });
+    }
+
+
+    public static IHostBuilder MockedHostBuilderWithEnvironment()
+    {
+        return new HostBuilder()
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddEnvironmentVariables();
+            })
+            .ConfigureServices((context, services) =>
+            {
+                var section = context.Configuration.GetSection("IxcOrm")
+                    ?? throw new Exception("A seção \"IxcOrm__\" não está presente nas variáveis de ambiente.");
+
+                services.AddIxcOrmEnvironment(env =>
+                {
+                    string? ixcAccessToken = section["AccessToken"];
+                    string? ixcServerDomain = section["ServerDomain"];
 
                     if (!string.IsNullOrWhiteSpace(ixcAccessToken) &&
                         !string.IsNullOrWhiteSpace(ixcServerDomain))
