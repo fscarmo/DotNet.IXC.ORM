@@ -8,7 +8,7 @@ namespace DotNet.IXC.ORM.Test;
 public class EnvironmentTest
 {
     [Fact]
-    public void LoadEnvironmentService()
+    public void LoadEnvironmentFromSystem()
     {
         var host = Utils.MockedHostBuilder().Build();
         var env = host.Services.GetService<IxcOrmEnvironment>();

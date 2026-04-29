@@ -16,17 +16,17 @@ public static class Utils
         return new HostBuilder()
             .ConfigureAppConfiguration((context, config) =>
             {
-                config.AddJsonFile("appsettings.json");
+                config.AddEnvironmentVariables();
             })
             .ConfigureServices((context, services) =>
             {
                 var section = context.Configuration.GetSection("IxcOrm")
-                    ?? throw new Exception("A seção IxcOrm está faltando no arquivo appsettings.json.");
+                    ?? throw new Exception("A seção \"IxcOrm__\" não está presente nas variáveis de ambiente.");
 
                 services.AddIxcOrmEnvironment(env =>
                 {
-                    string? ixcAccessToken = section["IxcAccessToken"];
-                    string? ixcServerDomain = section["IxcServerDomain"];
+                    string? ixcAccessToken = section["AccessToken"];
+                    string? ixcServerDomain = section["ServerDomain"];
 
                     if (!string.IsNullOrWhiteSpace(ixcAccessToken) &&
                         !string.IsNullOrWhiteSpace(ixcServerDomain))
@@ -46,6 +46,9 @@ public static class Utils
     )
     {
         var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+        handlerMock.Protected()
+            .Setup("Dispose", ItExpr.IsAny<bool>());
 
         handlerMock
             .Protected()

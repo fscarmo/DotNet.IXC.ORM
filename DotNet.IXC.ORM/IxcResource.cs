@@ -6,7 +6,7 @@ namespace DotNet.IXC.ORM;
 
 public abstract class IxcResource
 {
-    public static readonly string SRC_ATIVAR_CLIENTE = "cliente_contrato_ativar_cliente";
+    public static readonly string SRC_ATIVAR_CONTRATO = "cliente_contrato_ativar_cliente";
     public static readonly string SRC_DESBLOQUEIO_CONFIANCA = "desbloqueio_confianca";
     public static readonly string SRC_LIBERACAO_TEMPORARIA = "cliente_contrato_btn_lib_temp_24722";
     public static readonly string SRC_LIMPAR_MAC = "radusuarios_25452";
@@ -19,11 +19,11 @@ public abstract class IxcResource
 
         var query = new Dictionary<string, object>
         {
-            { "qtype", "cliente_contrato_ativar_cliente.id" },
+            { "qtype", $"{SRC_ATIVAR_CONTRATO}.id" },
             { "id_contrato",  idContrato }
         };
 
-        using var emitter = new RequestEmitter(SRC_ATIVAR_CLIENTE);
+        using var emitter = new RequestEmitter(SRC_ATIVAR_CONTRATO);
         return await emitter.EmmitResourceRequestAsync(query);
     }
 
