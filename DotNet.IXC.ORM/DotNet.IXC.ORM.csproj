@@ -10,10 +10,28 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.xml</AllowedOutputExtensionsInPackageBuildOutputFolder>
 		<NoWarn>$(NoWarn);1591</NoWarn>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>.NET IXC ORM</Title>
+		<Authors>Felipe S. Carmo</Authors>
+		<Description>Biblioteca ORM para consumo de dados da API do sistema IXC Provedor</Description>
+		<PackageProjectUrl>https://github.com/fscarmo/DotNet.IXC.ORM</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/fscarmo/DotNet.IXC.ORM</RepositoryUrl>
+		<Version>1.0.0</Version>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 	
 	<ItemGroup>
 		<None Update="Docs\IxcOrm.xml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Docs\Api\RequestEmitter.xml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
