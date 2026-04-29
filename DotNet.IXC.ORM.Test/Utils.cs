@@ -47,6 +47,9 @@ public static class Utils
     {
         var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
 
+        handlerMock.Protected()
+            .Setup("Dispose", ItExpr.IsAny<bool>());
+
         handlerMock
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
