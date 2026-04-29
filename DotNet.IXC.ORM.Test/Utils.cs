@@ -11,35 +11,7 @@ namespace DotNet.IXC.ORM.Test;
 
 public static class Utils
 {
-    public static IHostBuilder MockedHostBuilderWithAppSettings()
-    {
-        return new HostBuilder()
-            .ConfigureAppConfiguration((context, config) =>
-            {
-                config.AddJsonFile("appsettings.json");
-            })
-            .ConfigureServices((context, services) =>
-            {
-                var section = context.Configuration.GetSection("IxcOrm")
-                    ?? throw new Exception("A seção \"IxcOrm\" não está presente no arquivo appsettings.json.");
-
-                services.AddIxcOrmEnvironment(env =>
-                {
-                    string? ixcAccessToken = section["AccessToken"];
-                    string? ixcServerDomain = section["ServerDomain"];
-
-                    if (!string.IsNullOrWhiteSpace(ixcAccessToken) &&
-                        !string.IsNullOrWhiteSpace(ixcServerDomain))
-                    {
-                        env.SetupAccessToken(ixcAccessToken);
-                        env.SetupServerDomain(ixcServerDomain);
-                    }
-                });
-            });
-    }
-
-
-    public static IHostBuilder MockedHostBuilderWithEnvironment()
+    public static IHostBuilder MockedHostBuilder()
     {
         return new HostBuilder()
             .ConfigureAppConfiguration((context, config) =>

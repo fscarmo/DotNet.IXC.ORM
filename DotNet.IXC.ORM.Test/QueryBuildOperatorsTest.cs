@@ -10,7 +10,7 @@ public class QueryBuildOperatorsTest
 
 
     [Fact]
-    public void QueryWithLikeOperator()
+    public void QueryLikeOperator()
     {
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
@@ -34,7 +34,7 @@ public class QueryBuildOperatorsTest
 
 
     [Fact]
-    public void QueryWithExactlyOperator()
+    public void QueryExactlyOperator()
     {
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
@@ -58,7 +58,7 @@ public class QueryBuildOperatorsTest
 
 
     [Fact]
-    public void QueryWithNotOperator()
+    public void QueryNotOperator()
     {
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
@@ -82,7 +82,7 @@ public class QueryBuildOperatorsTest
 
 
     [Fact]
-    public void QueryWithLessThanOperator()
+    public void QueryLessThanOperator()
     {
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
@@ -106,7 +106,7 @@ public class QueryBuildOperatorsTest
 
 
     [Fact]
-    public void QueryWithLessThanOrEqualOperator()
+    public void QueryLessThanOrEqualOperator()
     {
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
@@ -130,7 +130,7 @@ public class QueryBuildOperatorsTest
 
 
     [Fact]
-    public void QueryWithGreaterThanOperator()
+    public void QueryGreaterThanOperator()
     {
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
@@ -154,7 +154,7 @@ public class QueryBuildOperatorsTest
 
 
     [Fact]
-    public void QueryWithGreaterThanOrEqualOperator()
+    public void QueryGreaterThanOrEqualOperator()
     {
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
