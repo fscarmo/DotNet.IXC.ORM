@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Numerics;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using DotNet.IXC.ORM.Config;
 using DotNet.IXC.ORM.Exceptions;
@@ -36,12 +34,12 @@ public class RequestEmitter : IDisposable
 
 
     /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="Constructor"]/*'/>
-    public RequestEmitter(string table)
+    public RequestEmitter(string table, HttpClient? client = null)
     {
         Table = table;
+        httpClient = client ?? new HttpClient();
 
         headers = [];
-        httpClient = IxcOrmOptions.Instance.HttpClient;
 
         SetupDefaultHeaders();
     }
@@ -168,8 +166,6 @@ public class RequestEmitter : IDisposable
     /// <include file='Docs/Api/RequestEmitter.xml' path='docs/member[@name="EmmitRequestAsync"]/*'/>
     protected virtual async Task<string> EmmitRequestAsync(HttpMethod method, CancellationToken? cancellationToken = null)
     {
-        HttpResponseMessage? response = null;
-
         try
         {
             using var request = new HttpRequestMessage(method, url);
@@ -179,7 +175,7 @@ public class RequestEmitter : IDisposable
                 request.Headers.TryAddWithoutValidation(header.Key, header.Value)
             );
 
-            response = await httpClient.SendAsync(request, cancellationToken ?? CancellationToken.None);
+            using var response = await httpClient.SendAsync(request, cancellationToken ?? CancellationToken.None);
             response.EnsureSuccessStatusCode();
 
             return await response
@@ -198,13 +194,8 @@ public class RequestEmitter : IDisposable
         }
         catch (HttpRequestException e)
         {
-            int statusCode = (int)(response?.StatusCode ?? HttpStatusCode.ServiceUnavailable);
             throw new IxcOrmRequestException(
-                $"A requisição HTTP falhou. O IXC retornou um código de erro: {statusCode}", e);
-        }
-        finally
-        {
-            response?.Dispose();
+                $"A requisição HTTP falhou. O IXC retornou um código de erro: {e.StatusCode}", e);
         }
     }
 
