@@ -2,7 +2,10 @@ name: Publish to NuGet
 
 on:
   push:
-    branches: [master]
+    tags:
+      - 'v*'
+    branches:
+      - master
 
 env:
   PROJECT_PATH: 'DotNet.IXC.ORM/DotNet.IXC.ORM.csproj'
@@ -65,4 +68,5 @@ jobs:
         run: |
           dotnet nuget push "${{ env.PROJECT_OUTPUT_DIRECTORY }}/*.nupkg" \
           --api-key ${{ secrets.NUGET_API_KEY }} \
-          --source https://api.nuget.org/v3/index.json
+          --source https://api.nuget.org/v3/index.json \
+          --skip-duplicate
