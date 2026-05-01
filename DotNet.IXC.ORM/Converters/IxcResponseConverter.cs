@@ -7,24 +7,23 @@ namespace DotNet.IXC.ORM.Converters;
 
 public class IxcResponseConverter : JsonConverter<IxcResponse>
 {
-    public static void ReadBaseProperty(ref Utf8JsonReader reader, string key, IxcResponse response, JsonSerializerOptions options)
+    public static int ReadInt32Safely(ref Utf8JsonReader reader)
     {
-        switch (key)
+        if (reader.TokenType == JsonTokenType.Number)
         {
-            case "type":
-            case "tipo":
-                response.Type = reader.GetString() ?? string.Empty;
-                break;
-
-            case "message":
-            case "mensagem":
-                response.Message = reader.GetString() ?? string.Empty;
-                break;
-
-            default:
-                reader.Skip();
-                break;
+            return reader.GetInt32();
         }
+
+        if (reader.TokenType == JsonTokenType.String)
+        {
+            string? value = reader.GetString();
+            if (value is not null && int.TryParse(value, out int result))
+            {
+                return result;
+            }
+        }
+
+        throw new JsonException($"Falha ao converter valor do tipo int32.");
     }
 
 
@@ -46,7 +45,18 @@ public class IxcResponseConverter : JsonConverter<IxcResponse>
             string key = reader.GetString()?.ToLowerInvariant() ?? string.Empty;
             reader.Read();
 
-            ReadBaseProperty(ref reader, key, response, options);
+            switch (key)
+            {
+                case "type":
+                case "tipo":
+                    response.Type = reader.GetString() ?? "success";
+                    break;
+
+                case "message":
+                case "mensagem":
+                    response.Message = reader.GetString() ?? string.Empty;
+                    break;
+            }
         }
 
         throw new JsonException("Erro na conversão da resposta. O conversor não conseguiu encerrar a conversão.");

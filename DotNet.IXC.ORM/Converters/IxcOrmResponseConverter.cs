@@ -27,22 +27,28 @@ public class IxcOrmResponseConverter<T> : JsonConverter<IxcOrmResponse<T>> where
 
             switch (key)
             {
+                case "type":
+                case "tipo":
+                    response.Type = reader.GetString() ?? "success";
+                    break;
+
+                case "message":
+                case "mensagem":
+                    response.Message = reader.GetString() ?? string.Empty;
+                    break;
+
                 case "page":
                 case "pagina":
-                    response.Page = reader.GetInt32();
+                    response.Page = IxcResponseConverter.ReadInt32Safely(ref reader);
                     break;
 
                 case "total":
-                    response.Total = reader.GetInt32();
+                    response.Total = IxcResponseConverter.ReadInt32Safely(ref reader);
                     break;
 
                 case "records":
                 case "registros":
                     response.Records = JsonSerializer.Deserialize<List<T>>(ref reader, options) ?? [];
-                    break;
-
-                default:
-                    IxcResponseConverter.ReadBaseProperty(ref reader, key, response, options);
                     break;
             }
         }
@@ -59,7 +65,7 @@ public class IxcOrmResponseConverter<T> : JsonConverter<IxcOrmResponse<T>> where
         writer.WriteNumber("page", value.Page);
         writer.WriteNumber("total", value.Total);
 
-        writer.WriteStartArray("records");
+        writer.WriteStartArray("registros");
         foreach (var record in value.Records)
         {
             JsonSerializer.Serialize(writer, record, options);
