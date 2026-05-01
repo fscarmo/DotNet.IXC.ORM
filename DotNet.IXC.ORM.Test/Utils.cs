@@ -9,7 +9,7 @@ using DotNet.IXC.ORM.Config;
 namespace DotNet.IXC.ORM.Test;
 
 
-public static class Utils
+public class Utils
 {
     public static IHostBuilder MockedHostBuilder()
     {
@@ -39,11 +39,7 @@ public static class Utils
     }
 
 
-    public static IHostBuilder MockedHttpMessageHandler(
-        IHostBuilder hostBuilder,
-        HttpStatusCode? statusCode = null,
-        string? response = null
-    )
+    public static HttpClient MockedHttpClient(HttpStatusCode? statusCode = null, string? response = null)
     {
         var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
 
@@ -60,16 +56,9 @@ public static class Utils
             .ReturnsAsync(new HttpResponseMessage()
             {
                 StatusCode = statusCode ?? HttpStatusCode.OK,
-                Content = new StringContent(response ?? """{"type":"success","page":0,"total":0,"registros":[]}"""),
+                Content = new StringContent(response ?? """{"type":"success","message":"Teste!"}"""),
             });
 
-        return hostBuilder.ConfigureServices((context, services) =>
-        {
-            services.AddHttpClient(options =>
-            {
-                var httpClient = new HttpClient(handlerMock.Object);
-                options.SetupHttpClient(httpClient);
-            });
-        });
+        return new HttpClient(handlerMock.Object);
     }
 }

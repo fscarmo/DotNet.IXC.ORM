@@ -3,15 +3,11 @@
 
 public class QueryBuildOperatorsTest
 {
-    public QueryBuildOperatorsTest()
-    {
-        Utils.MockedHostBuilder().Build();
-    }
-
-
     [Fact]
     public void QueryLikeOperator()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
             .Like("John");
@@ -36,6 +32,8 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryExactlyOperator()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
             .Exactly("John");
@@ -60,6 +58,8 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryNotOperator()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .Where("name")
             .Not("John");
@@ -84,6 +84,8 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryLessThanOperator()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .LessThan(30);
@@ -108,6 +110,8 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryLessThanOrEqualOperator()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .LessThanOrEqual(30);
@@ -132,6 +136,8 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryGreaterThanOperator()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .GreaterThan(18);
@@ -156,6 +162,8 @@ public class QueryBuildOperatorsTest
     [Fact]
     public void QueryGreaterThanOrEqualOperator()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .Where("age")
             .GreaterThanOrEqual(18);

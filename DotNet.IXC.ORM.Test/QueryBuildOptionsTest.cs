@@ -6,15 +6,11 @@ namespace DotNet.IXC.ORM.Test;
 
 public class QueryBuildOptionsTest
 {
-    public QueryBuildOptionsTest()
-    {
-        Utils.MockedHostBuilder().Build();
-    }
-
-
     [Fact]
     public void QueryWithPagination()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .WithPagination(5, 100)
             .Where("name").Like("John");
@@ -39,6 +35,8 @@ public class QueryBuildOptionsTest
     [Fact]
     public void QueryWithSortAsc()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .OrderBy("age", IxcOrmSort.Asc)
             .Where("name").Like("John");
@@ -63,6 +61,8 @@ public class QueryBuildOptionsTest
     [Fact]
     public void QueryWithSortDesc()
     {
+        using var host = Utils.MockedHostBuilder().Build();
+
         var ixcOrm = new IxcOrm("test_table")
             .OrderBy("age", IxcOrmSort.Desc)
             .Where("name").Like("John");
