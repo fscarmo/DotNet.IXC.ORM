@@ -2,35 +2,42 @@ name: Publish to NuGet
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
+
+env:
+  PROJECT_PATH: 'DotNet.IXC.ORM/DotNet.IXC.ORM.csproj'
+  PROJECT_TEST_PATH: 'DotNet.IXC.ORM.Test/DotNet.IXC.ORM.Test.csproj'
+  PROJECT_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET
+
+      - name: Setup
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-          
-      - name: Restore and Build
-        run: |
-          dotnet restore
-          dotnet build --configuration Release
 
-      - name: Run Tests
+      - name: Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
         run: |
-          dotnet test ./DotNet.IXC.ORM.Test/DotNet.IXC.ORM.Test.csproj \
+          dotnet build ${{ env.PROJECT_PATH }} \
+          --no-restore \
+          --configuration Release
+
+      - name: Test
+        run: |
+          dotnet test ${{ env.PROJECT_TEST_PATH }} \
             --configuration Release \
             --no-build \
             --verbosity normal
         env:
           IxcOrm__AccessToken: "0:1234567891012345678910123456789101234567891012345678910123456789"
-          IxcOrm__ServerDomain: "www.dominio.com.br"
+          IxcOrm__ServerDomain: "://dominio.com.br"
 
   deploy:
     runs-on: ubuntu-latest
@@ -39,16 +46,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/checkout@v4
+      - name: Setup
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
       - name: Build
-        run: dotnet build --configuration Release
-      
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release
+
       - name: Pack
-        run: dotnet pack --configuration Release --output ./nupkg
-        
+        run: |
+          dotnet pack ${{ env.PROJECT_PATH }} \
+          --no-build \
+          --configuration Release \
+          --include-symbols \
+          --output ${{ env.PROJECT_OUTPUT_DIRECTORY }}
+
       - name: Push to NuGet
-        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://nuget.org --skip-duplicate
+        run: |
+          dotnet nuget push "${{ env.PROJECT_OUTPUT_DIRECTORY }}/*.nupkg" \
+          --api-key ${{ secrets.NUGET_API_KEY }} \
+          --source https://nuget.org --skip-duplicate
