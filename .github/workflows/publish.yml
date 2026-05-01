@@ -24,8 +24,10 @@ jobs:
 
       - name: Run Tests
         run: |
-          dotnet test ./DotNet.IXC.ORM.Test/DotNet.IXC.ORM.Test.csproj --configuration Release
-          --no-build --verbosity normal
+          dotnet test ./DotNet.IXC.ORM.Test/DotNet.IXC.ORM.Test.csproj \
+            --configuration Release \
+            --no-build \
+            --verbosity normal
         env:
           IxcOrm__AccessToken: "0:1234567891012345678910123456789101234567891012345678910123456789"
           IxcOrm__ServerDomain: "www.dominio.com.br"
