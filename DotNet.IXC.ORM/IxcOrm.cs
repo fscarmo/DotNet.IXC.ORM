@@ -20,7 +20,7 @@ namespace DotNet.IXC.ORM;
 /// Versão: 1.2.0 <br/>
 /// Desde: 2026-04-28
 /// </remarks>
-public class IxcOrm(string table) : RequestEmitter(table)
+public class IxcOrm(string table, HttpClient? client = null): RequestEmitter(table, client)
 {
     private readonly List<Parameter> parameters = [];
 

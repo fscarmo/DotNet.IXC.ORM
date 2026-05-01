@@ -1,16 +1,33 @@
-﻿using System.Net;
-using DotNet.IXC.ORM.Test.Models;
+﻿using DotNet.IXC.ORM.Test.Models;
+using Microsoft.Extensions.Hosting;
+using System.Net;
 
 
 namespace DotNet.IXC.ORM.Test;
 
 
-public class RequestTest
+public class RequestTest : IDisposable
 {
+    private readonly IHost host;
+
+
+    public RequestTest()
+    {
+        host = Utils.MockedHostBuilder().Build();
+    }
+
+
+    public void Dispose()
+    {
+        host.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+
     [Fact]
     public async Task SuccessfulCustomerResponse()
     {
-        string response = @"{
+        string responseContent = @"{
             ""type"": ""success"",
             ""page"": 1,
             ""total"": 20,
@@ -21,16 +38,13 @@ public class RequestTest
                     ""cnpj_cpf"": ""123.456.789-10""
                 }
             ]
-        }".Replace("\r", "")
-          .Replace("\n", "");
+        }".Replace("\n", "")
+          .Replace("\r", "")
+          .Replace("\t", "");
 
-        Utils.MockedHttpMessageHandler(
-            Utils.MockedHostBuilder(),
-            HttpStatusCode.OK,
-            response
-        ).Build();
+        using var client = Utils.MockedHttpClient(HttpStatusCode.OK, responseContent);
 
-        var orm = new IxcOrm("cliente");
+        var orm = new IxcOrm("cliente", client);
 
         var content = await orm
             .Where("razao").Like("FELIPE DE SOUSA")
@@ -41,11 +55,11 @@ public class RequestTest
         Assert.Equal(1, content.Page);
         Assert.Equal(20, content.Total);
 
-        var client = content.Records.FirstOrDefault();
+        var customer = content.Records.FirstOrDefault();
 
-        Assert.NotNull(client);
-        Assert.Equal(1, client.Id);
-        Assert.Equal("FELIPE S CARMO", client.Razao);
-        Assert.Equal("123.456.789-10", client.CnpjCpf);
+        Assert.NotNull(customer);
+        Assert.Equal(1, customer.Id);
+        Assert.Equal("FELIPE S CARMO", customer.Razao);
+        Assert.Equal("123.456.789-10", customer.CnpjCpf);
     }
 }

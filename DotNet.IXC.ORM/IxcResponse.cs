@@ -54,7 +54,7 @@ public class IxcResponse
     public IxcResponse(string content)
     {
         string? htmlContent = GetHtmlContent(content);
-        if (htmlContent != null)
+        if (htmlContent is not null)
             LoadStatusAsError(htmlContent);
         else
             LoadStatusAsSuccess(content);
@@ -79,7 +79,6 @@ public class IxcResponse
         }
         catch (JsonException e)
         {
-            System.Diagnostics.Debug.WriteLine($"ERRO: {e.Message}");
             throw new IxcOrmResponseException("Falha ao desserializar o status e a mensagem da resposta do IXC.", e);
         }
     }

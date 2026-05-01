@@ -20,7 +20,7 @@ public sealed class IxcOrmResponse<T> : IxcResponse where T : IxcRecord
     public IxcOrmResponse(string content) : base()
     {
         string? htmlContent = GetHtmlContent(content);
-        if (htmlContent != null)
+        if (htmlContent is not null)
             LoadContentAsError(htmlContent);
         else
             LoadContentAsSuccess(content);
@@ -42,6 +42,7 @@ public sealed class IxcOrmResponse<T> : IxcResponse where T : IxcRecord
         try
         {
             var deserialized = JsonSerializer.Deserialize<IxcOrmResponse<T>>(content, base.options);
+
             Type = deserialized?.Type ?? string.Empty;
             Message = deserialized?.Message ?? string.Empty;
             Page = deserialized?.Page ?? 0;

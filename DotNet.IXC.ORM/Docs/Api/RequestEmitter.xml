@@ -6,6 +6,7 @@
 			Instancia a classe <see cref="T:DotNet.IXC.ORM.Api.RequestEmitter"/> definindo o endpoint de destino.
 		</summary>
 		<param name="table">O endpoint da API do IXC Provedor para o qual a requisição será enviada.</param>
+		<param name="client">Um cliente HTTP (opcional) a ser utilizado para enviar a requisição.</param>
 	</member>
 
 	<member name="GetAsync">

@@ -12,63 +12,63 @@ public abstract class IxcResource
     public static readonly string SRC_LIMPAR_MAC = "radusuarios_25452";
 
 
-    public static async Task<IxcResponse> AtivarContrato(int idContrato)
+    public static async Task<IxcResponse> AtivarContrato(int contrato, HttpClient? client = null)
     {
-        if (idContrato < 1)
-            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(idContrato));
+        if (contrato < 1)
+            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(contrato));
 
         var query = new Dictionary<string, object>
         {
             { "qtype", $"{SRC_ATIVAR_CONTRATO}.id" },
-            { "id_contrato",  idContrato }
+            { "id_contrato",  contrato }
         };
 
-        using var emitter = new RequestEmitter(SRC_ATIVAR_CONTRATO);
+        using var emitter = new RequestEmitter(SRC_ATIVAR_CONTRATO, client ?? new HttpClient());
         return await emitter.EmmitResourceRequestAsync(query);
     }
 
 
-    public static async Task<IxcResponse> DesbloqueioDeConfianca(int idContrato)
+    public static async Task<IxcResponse> DesbloqueioDeConfianca(int contrato, HttpClient? client = null)
     {
-        if (idContrato < 1)
-            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(idContrato));
+        if (contrato < 1)
+            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(contrato));
 
         var query = new Dictionary<string, object>
         {
-            { "id", idContrato }
+            { "id", contrato }
         };
 
-        using var emitter = new RequestEmitter(SRC_DESBLOQUEIO_CONFIANCA);
+        using var emitter = new RequestEmitter(SRC_DESBLOQUEIO_CONFIANCA, client ?? new HttpClient());
         return await emitter.EmmitResourceRequestAsync(query);
     }
 
 
-    public static async Task<IxcResponse> LiberacaoTemporaria(int idContrato)
+    public static async Task<IxcResponse> LiberacaoTemporaria(int contrato, HttpClient? client = null)
     {
-        if (idContrato < 1)
-            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(idContrato));
+        if (contrato < 1)
+            throw new ArgumentException("O id do contrato deve ser maior que zero.", nameof(contrato));
 
         var query = new Dictionary<string, object>
         {
-            { "id", idContrato }
+            { "id", contrato }
         };
 
-        using var emitter = new RequestEmitter(SRC_LIBERACAO_TEMPORARIA);
+        using var emitter = new RequestEmitter(SRC_LIBERACAO_TEMPORARIA, client ?? new HttpClient());
         return await emitter.EmmitResourceRequestAsync(query);
     }
 
 
-    public static async Task<IxcResponse> LimparMac(int idLogin)
+    public static async Task<IxcResponse> LimparMac(int login, HttpClient? client = null)
     {
-        if (idLogin < 1)
-            throw new ArgumentException("O id do PPPoE deve ser maior que zero.", nameof(idLogin));
+        if (login < 1)
+            throw new ArgumentException("O id do login (PPPoE) deve ser maior que zero.", nameof(login));
 
         var query = new Dictionary<string, object>
         {
-            { "get_id",  idLogin }
+            { "get_id",  login }
         };
 
-        using var emitter = new RequestEmitter(SRC_LIMPAR_MAC);
+        using var emitter = new RequestEmitter(SRC_LIMPAR_MAC, client ?? new HttpClient());
         return await emitter.EmmitResourceRequestAsync(query);
     }
 }
