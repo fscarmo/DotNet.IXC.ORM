@@ -33,7 +33,6 @@ jobs:
         run: |
           dotnet test ${{ env.PROJECT_TEST_PATH }} \
             --configuration Release \
-            --no-build \
             --verbosity normal
         env:
           IxcOrm__AccessToken: "0:1234567891012345678910123456789101234567891012345678910123456789"
