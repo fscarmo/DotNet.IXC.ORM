@@ -61,8 +61,8 @@ jobs:
           --include-symbols \
           --output ${{ env.PROJECT_OUTPUT_DIRECTORY }}
 
-      - name: Push to NuGet
+      - name: Deploy
         run: |
           dotnet nuget push "${{ env.PROJECT_OUTPUT_DIRECTORY }}/*.nupkg" \
           --api-key ${{ secrets.NUGET_API_KEY }} \
-          --source https://nuget.org --skip-duplicate
+          --source https://nuget.org
