@@ -28,12 +28,11 @@ public class RequestTest : IDisposable
     public async Task SuccessfulCustomerResponse()
     {
         string responseContent = @"{
-            ""type"": ""success"",
-            ""page"": 1,
-            ""total"": 20,
+            ""page"": ""1"",
+            ""total"": ""5"",
             ""registros"": [
                 {
-                    ""id"": 1,
+                    ""id"": ""1"",
                     ""razao"": ""FELIPE S CARMO"",
                     ""cnpj_cpf"": ""123.456.789-10""
                 }
@@ -47,13 +46,13 @@ public class RequestTest : IDisposable
         var orm = new IxcOrm("cliente", client);
 
         var content = await orm
-            .Where("razao").Like("FELIPE DE SOUSA")
+            .Where("razao").Like("FELIPE S CARMO")
             .GetAsync<Customer>();
 
         Assert.NotNull(content);
         Assert.Equal("success", content.Type);
         Assert.Equal(1, content.Page);
-        Assert.Equal(20, content.Total);
+        Assert.Equal(5, content.Total);
 
         var customer = content.Records.FirstOrDefault();
 
