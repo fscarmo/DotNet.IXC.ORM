@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using DotNet.IXC.ORM.Exceptions;
 using DotNet.IXC.ORM.Converters;
 
@@ -34,6 +35,7 @@ public class IxcResponse
 
     protected readonly JsonSerializerOptions options = new()
     {
+        NumberHandling = JsonNumberHandling.AllowReadingFromString,
         PropertyNameCaseInsensitive = true,
         Converters =
         {
@@ -43,7 +45,7 @@ public class IxcResponse
     };
 
 
-    public string Type { get; set; } = string.Empty;
+    public string Type { get; set; } = "success";
 
     public string Message { get; set; } = string.Empty;
 
