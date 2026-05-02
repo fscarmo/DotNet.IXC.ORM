@@ -42,8 +42,7 @@ public class RequestTest : IDisposable
           .Replace("\t", "");
 
         using var client = Utils.MockedHttpClient(HttpStatusCode.OK, responseContent);
-
-        var orm = new IxcOrm("cliente", client);
+        using var orm = new IxcOrm("cliente", client);
 
         var content = await orm
             .Where("razao").Like("FELIPE S CARMO")
