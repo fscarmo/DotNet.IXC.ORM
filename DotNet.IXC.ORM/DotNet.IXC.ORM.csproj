@@ -7,8 +7,6 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>IXC.ORM</PackageId>
-		<Version>1.0.1</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.xml</AllowedOutputExtensionsInPackageBuildOutputFolder>
 		<NoWarn>$(NoWarn);1591</NoWarn>
@@ -16,8 +14,12 @@
 		<Title>.NET IXC ORM</Title>
 		<Authors>Felipe S. Carmo</Authors>
 		<Description>Biblioteca ORM para consumo de dados da API do sistema IXC Provedor</Description>
-		<PackageProjectUrl>https://github.com/fscarmo/DotNet.IXC.ORM</PackageProjectUrl>
+		<PackageId>IXC.ORM</PackageId>
+		<PackageTags>IXC ORM Provedor</PackageTags>
+		<Version>1.0.2</Version>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageProjectUrl>https://github.com/fscarmo/DotNet.IXC.ORM</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/fscarmo/DotNet.IXC.ORM</RepositoryUrl>
 	</PropertyGroup>
 
