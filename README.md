@@ -31,7 +31,7 @@ Após o download, certifique-se de que a dependência foi adicionada ao seu .csp
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IXC.ORM" Version="1.0.2" />
+    <PackageReference Include="IXC.ORM" Version="1.0.5" />
     ...
   </ItemGroup>
   ...
@@ -89,7 +89,7 @@ builder.Services.AddIxcOrmEnvironment(config =>
 ### :man_technologist: Implementação
 
 
-> Convertendo resultados com o auxílio da classe `DotNet.IXC.ORM.IxcRecord`.
+> Convertendo resultados com o auxílio da classe <a href="https://github.com/fscarmo/DotNet.IXC.ORM/blob/master/DotNet.IXC.ORM/IxcRecord.cs" target="_blank">IxcRecord</a>.
 ```csharp
 using DotNet.IXC.ORM;
 using System.Text.Json.Serialization;
@@ -104,7 +104,7 @@ public class Cliente : IxcRecord
 }
 ```
 
-> Utilizando a classe `DotNet.IXC.ORM.IxcOrm` para poder enviar as requisições ao o seu IXC Provedor.
+> Utilizando a classe <a href="https://github.com/fscarmo/DotNet.IXC.ORM/blob/master/DotNet.IXC.ORM/IxcOrm.cs" target="_blank">IxcOrm</a> para poder enviar as requisições ao o seu IXC Provedor.
 ```csharp
 using DotNet.IXC.ORM;
 
@@ -133,7 +133,7 @@ public class ClienteOrm : IxcOrm
 }
 ```
 
-> Ciando uma classe derivada de `IxcOrm`, como no exemplo acima, permitirá que você a utilize como no exemplo abaixo...
+> Criar uma classe derivada de <a href="https://github.com/fscarmo/DotNet.IXC.ORM/blob/master/DotNet.IXC.ORM/IxcOrm.cs" target="_blank">IxcOrm</a>, como no exemplo acima, permitirá que você a utilize como no exemplo abaixo...
 ```csharp
 // EXEMPLO DE COMO IMPLEMENTAR UM POSSÍVEL MÉTODO "GET" EM UM CONTROLLER DA SUA API
 
@@ -166,9 +166,8 @@ public async Task<IActionResult> FindByCnpjOrCpf([FromRoute] string cnpjOrCpf)
 
 
 > [!TIP]
-> Você não é obrigado a seguir à risca os exemplos acima.
-> Eles servem apenas como fonte de informação sobre como utilizar esta biblioteca.
-> Sinta-se livre para utilizar sua imaginação!
+> Você não é obrigado a seguir à risca os exemplos acima... ☝🏻\
+> Eles servem apenas como orientação sobre como utilizar esta biblioteca!
 
 
 # Contribuições
