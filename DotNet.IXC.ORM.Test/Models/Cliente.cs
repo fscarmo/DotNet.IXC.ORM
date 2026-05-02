@@ -4,7 +4,7 @@
 namespace DotNet.IXC.ORM.Test.Models;
 
 
-public class Customer : IxcRecord
+public class Cliente : IxcRecord
 {
     [JsonPropertyName("razao")]
     public string Razao { get; set; } = string.Empty;
