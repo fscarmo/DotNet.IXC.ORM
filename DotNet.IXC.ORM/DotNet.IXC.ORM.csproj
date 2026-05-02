@@ -16,18 +16,25 @@
 		<Description>Biblioteca ORM para consumo de dados da API do sistema IXC Provedor</Description>
 		<PackageId>IXC.ORM</PackageId>
 		<PackageTags>IXC ORM Provedor</PackageTags>
-		<Version>1.0.2</Version>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Version>1.0.3</Version>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/fscarmo/DotNet.IXC.ORM</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/fscarmo/DotNet.IXC.ORM</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Include="..\README.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\README-NUGET.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 	
 	<ItemGroup>
