@@ -6,9 +6,9 @@ on:
       - 'v*'
 
 env:
+  PROJECT_OUTPUT_PATH: ${{ github.workspace }}/output
   PROJECT_PATH: 'DotNet.IXC.ORM/DotNet.IXC.ORM.csproj'
   PROJECT_TEST_PATH: 'DotNet.IXC.ORM.Test/DotNet.IXC.ORM.Test.csproj'
-  PROJECT_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
 
 jobs:
   build:
@@ -53,7 +53,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: test
-    environment: NuGetRelease
+    environment: NuGet
     steps:
       - uses: actions/checkout@v4
 
@@ -71,11 +71,11 @@ jobs:
           --no-build \
           --configuration Release \
           --include-symbols \
-          --output ${{ env.PROJECT_OUTPUT_DIRECTORY }}
+          --output ${{ env.PROJECT_OUTPUT_PATH }}
 
       - name: Deploy
         run: |
-          dotnet nuget push "${{ env.PROJECT_OUTPUT_DIRECTORY }}/*.nupkg" \
+          dotnet nuget push "${{ env.PROJECT_OUTPUT_PATH }}/*.nupkg" \
           --api-key ${{ secrets.NUGET_API_KEY }} \
           --source https://api.nuget.org/v3/index.json \
           --skip-duplicate

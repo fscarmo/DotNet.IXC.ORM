@@ -31,7 +31,7 @@ Após o download, certifique-se de que a dependência foi adicionada ao seu .csp
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IXC.ORM" Version="1.0.5" />
+    <PackageReference Include="IXC.ORM" Version="1.0.6" />
     ...
   </ItemGroup>
   ...
