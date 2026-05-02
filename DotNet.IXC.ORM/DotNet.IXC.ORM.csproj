@@ -16,7 +16,7 @@
 		<Description>Biblioteca ORM para consumo de dados da API do sistema IXC Provedor</Description>
 		<PackageId>IXC.ORM</PackageId>
 		<PackageTags>IXC ORM Provedor</PackageTags>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/fscarmo/DotNet.IXC.ORM</PackageProjectUrl>
