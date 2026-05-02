@@ -47,7 +47,7 @@ public class RequestTest : IDisposable
 
         var content = await orm
             .Where("razao").Like("FELIPE S CARMO")
-            .GetAsync<Customer>();
+            .GetAsync<Cliente>();
 
         Assert.NotNull(content);
         Assert.Equal("success", content.Type);
