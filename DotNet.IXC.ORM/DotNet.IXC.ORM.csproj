@@ -16,11 +16,12 @@
 		<Description>Biblioteca ORM para consumo de dados da API do sistema IXC Provedor</Description>
 		<PackageId>IXC.ORM</PackageId>
 		<PackageTags>IXC ORM Provedor</PackageTags>
-		<Version>1.0.4</Version>
+		<Version>1.0.5</Version>
+		<Company>FSL Telecom</Company>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/fscarmo/DotNet.IXC.ORM</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/fscarmo/DotNet.IXC.ORM</RepositoryUrl>
+		<RepositoryUrl>https://github.com/fscarmo/DotNet.IXC.ORM.git</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
