@@ -68,17 +68,17 @@ services:
 
 > Siga o exemplo abaixo para carregar o ambiente da biblioteca em tempo de execução.
 ```csharp
-using DotNet.IXC.ORM.Config; // Sem isso, builder.Services.AddIxcOrmEnvironment(config => {}); não funciona!!!
+using DotNet.IXC.ORM.Config; // Habilita "builder.Services.AddIxcOrmEnvironment(config => {});"
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIxcOrmEnvironment(config =>
 {
     var accessToken = builder.Configuration.GetValue<string>("IxcOrm:AccessToken")
-        ?? throw new InvalidOperationException("A variável IxcOrm:AccessToken não está configurada.");
+        ?? throw new Exception("A variável IxcOrm:AccessToken não está configurada.");
 
     var serverDomain = builder.Configuration.GetValue<string>("IxcOrm:ServerDomain")
-        ?? throw new InvalidOperationException("A variável IxcOrm:ServerDomain não está configurada.");
+        ?? throw new Exception("A variável IxcOrm:ServerDomain não está configurada.");
 
     config.SetupAccessToken(accessToken);
     config.SetupServerDomain(serverDomain);
@@ -145,7 +145,6 @@ public async Task<IActionResult> FindByCnpjOrCpf([FromRoute] string cnpjOrCpf)
     try
     {
         var clientes = await orm.FindByCnpjOrCpf(cnpjOrCpf);
-
         if (clientes is null)
         {
             return NotFound();
